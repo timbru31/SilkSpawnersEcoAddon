@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>de.dustplanet</groupId>
 	<artifactId>SilkSpawnersEcoAddon</artifactId>
-	<version>0.1-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>SilkSpawnersEcoAddon</name>
 	<url>http://dev.bukkit.org/server-mods/silkspawnersecoaddon/</url>
 

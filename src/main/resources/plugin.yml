@@ -2,7 +2,7 @@ name: SilkSpawnersEcoAddon
 author: xGhOsTkiLLeRx
 main: de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon
 version: ${project.version}-b${BUILD_NUMBER}
-url: http://dev.bukkit.org/server-mods/silkspawners/
+url: http://dev.bukkit.org/server-mods/silkspawnersecoaddon/
 description: Use Vault as an economy based hook to charge changing of spawners
 permissions:
     silkspawners.free:
