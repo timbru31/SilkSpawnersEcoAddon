@@ -8,8 +8,8 @@ This plugin is released under the Creative Commons Attribution-NonCommercial-Sha
 Standard config:
 
 # You can configure every entityID or a default!
-cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can''t change the mob of this spawner, because you have not enough money!"
-afford: "&e[SilkSpawnersEco] &2This action costed &e%money%"
+cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
+afford: "&e[SilkSpawnersEco] &2This action cost &e%money%"
 default: 10.5
 pig: 7.25
 cow: 0.00
