@@ -10,6 +10,11 @@ import de.dustplanet.util.SilkUtil;
 public class SilkSpawnersEcoAddonListener implements Listener {
 	private SilkSpawnersEcoAddon plugin;
 	private SilkUtil su;
+	
+	/**
+	 * This is the listener of the custom event
+	 * @author xGhOsTkiLLeRx
+	 */
 
 	public SilkSpawnersEcoAddonListener(SilkSpawnersEcoAddon instance) {
 		plugin = instance;
@@ -21,16 +26,19 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 		// Get information
 		Player player = event.getPlayer();
 		short entityID = event.getEntityID();
+		// Get name and replace occuring spaces
 		String name = su.getCreatureName(entityID).toLowerCase().replaceAll(" ", "");
 		double price = plugin.defaultPrice;
 		// Is a specific price listed, yes get it!
 		if (plugin.config.contains(name)) price = plugin.getConfig().getDouble(name);
 		// If price is 0 or player has free perm, stop here!
 		if (price <= 0 || player.hasPermission("silkspawners.free")) return;
+		// If he has the money, charge it
 		if (plugin.economy.has(player.getName(), price)) {
 			plugin.economy.withdrawPlayer(player.getName(), price);
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
 		}
+		// Else notify and cancel
 		else {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
 			event.setCancelled(true);
