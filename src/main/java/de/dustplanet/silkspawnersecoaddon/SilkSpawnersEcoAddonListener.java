@@ -29,7 +29,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 		if (price <= 0 || player.hasPermission("silkspawners.free")) return;
 		if (plugin.economy.has(player.getName(), price)) {
 			plugin.economy.withdrawPlayer(player.getName(), price);
-			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afforded")).replace("%money%", Double.toString(price)));
+			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
 		}
 		else {
 			player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
