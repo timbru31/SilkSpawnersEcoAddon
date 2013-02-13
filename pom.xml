@@ -28,7 +28,7 @@
 		</repository>
 		<repository>
 			<id>SilkSpawners-Repo</id>
-			<url>http://ci.dustplanet.de/plugin/repository/everything/de/dustplanet/silkspawners</url>
+			<url>http://ci.dustplanet.de/plugin/repository/everything</url>
 		</repository>
 	</repositories>
 
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>Vault</artifactId>
-			<version>1.2.23-SNAPSHOT</version>
+			<version>1.2.24-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
