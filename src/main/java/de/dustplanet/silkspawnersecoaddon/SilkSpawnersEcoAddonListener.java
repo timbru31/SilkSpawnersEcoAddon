@@ -30,7 +30,13 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 		String name = su.getCreatureName(entityID).toLowerCase().replaceAll(" ", "");
 		double price = plugin.defaultPrice;
 		// Is a specific price listed, yes get it!
-		if (plugin.config.contains(name)) price = plugin.getConfig().getDouble(name);
+		if (plugin.config.contains(name)) {
+			price = plugin.getConfig().getDouble(name);
+		}
+		// Maybe only the ID is delivered?
+		else if (plugin.config.contains(Short.toString(entityID))) {
+			price = plugin.config.getDouble(Short.toString(entityID));
+		}
 		// If price is 0 or player has free perm, stop here!
 		if (price <= 0 || player.hasPermission("silkspawners.free")) return;
 		// If he has the money, charge it
