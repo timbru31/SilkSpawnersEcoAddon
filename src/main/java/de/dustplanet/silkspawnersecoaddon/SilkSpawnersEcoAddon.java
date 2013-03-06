@@ -46,8 +46,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	if (!configFile.exists()) {
 	    if (configFile.getParentFile().mkdirs()) {
 		copy(getResource("config.yml"), configFile);
-	    }
-	    else {
+	    } else {
 		getLogger().severe("The config folder could NOT be created, make sure it's writable!");
 		getLogger().severe("Disabling now!");
 		setEnabled(false);
@@ -72,8 +71,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     private void loadConfig() {
-	config.options()
-	.header("You can configure every entityID/name (without spaces) or a default!");
+	config.options().header("You can configure every entityID/name (without spaces) or a default!");
 	config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
 	config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
 	config.addDefault("default", 10.5);
@@ -112,8 +110,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 		    out.close();
 		}
 	    } catch (IOException e) {
-		getLogger().warning(
-			"Failed to close the streams! (I/O -> Output)");
+		getLogger().warning("Failed to close the streams! (I/O -> Output)");
 		e.printStackTrace();
 	    }
 	    try {
@@ -121,8 +118,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 		    in.close();
 		}
 	    } catch (IOException e) {
-		getLogger().warning(
-			"Failed to close the streams! (I/O -> Input)");
+		getLogger().warning("Failed to close the streams! (I/O -> Input)");
 		e.printStackTrace();
 	    }
 	}
