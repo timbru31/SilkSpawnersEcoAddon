@@ -74,6 +74,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	config.options().header("You can configure every entityID/name (without spaces) or a default!");
 	config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
 	config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
+	config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
+	config.addDefault("chargeSameMob", false);
 	config.addDefault("default", 10.5);
 	config.addDefault("pig", 7.25);
 	config.addDefault("cow", 0.00);

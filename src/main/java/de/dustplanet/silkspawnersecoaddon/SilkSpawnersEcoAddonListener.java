@@ -27,7 +27,13 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	// Get information
 	Player player = event.getPlayer();
 	short entityID = event.getEntityID();
-	// Get name and replace occuring spaces
+	// Don't charge the same mob more than 1 time
+	short spawnerID = event.getSpawner().getSpawnedType().getTypeId();
+	if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
+	    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sameMob")));
+	    return;
+	}
+	// Get name and replace occurring spaces
 	String name = su.getCreatureName(entityID).toLowerCase().replaceAll(" ", "");
 	double price = plugin.defaultPrice;
 	// Is a specific price listed, yes get it!

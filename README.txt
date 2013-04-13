@@ -10,6 +10,8 @@ Standard config:
 # You can configure every entityID/name (without spaces) or a default!
 cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
+sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
+chargeSameMob: false
 default: 10.5
 pig: 7.25
 cow: 0.00
