@@ -3,6 +3,7 @@ cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this s
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
 sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
 chargeSameMob: false
+chargeXP: false
 default: 10.5
 pig: 7.25
 cow: 0.00

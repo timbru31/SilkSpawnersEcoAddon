@@ -26,6 +26,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private File configFile;
     public Economy economy;
     public double defaultPrice = 10.5;
+    public boolean chargeXP;
 
     public void onEnable() {
 	// Check for Vault
@@ -36,9 +37,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	    setupEconomy();
 	} else {
 	    // Else tell the admin about the missing of Vault
-	    getLogger().severe("Vault was not found! Disabling...");
-	    setEnabled(false);
-	    return;
+	    getLogger().severe("Vault was not found! XP charging is now ON...");
 	}
 
 	// Config
@@ -56,6 +55,11 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
 	config = getConfig();
 	loadConfig();
+	
+	// Now we need to check regardless of the setting in the conifg if we need to charge XP
+	if (vault == null || !(vault instanceof Vault)) {
+	    chargeXP = true;
+	}
 
 	// Listeners
 	getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonListener(this), this);
@@ -76,12 +80,14 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
 	config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
 	config.addDefault("chargeSameMob", false);
+	config.addDefault("chargeXP", false);
 	config.addDefault("default", 10.5);
 	config.addDefault("pig", 7.25);
 	config.addDefault("cow", 0.00);
 	config.options().copyDefaults(true);
 	saveConfig();
 	defaultPrice = config.getDouble("default");
+	chargeXP = config.getBoolean("chargeXP");
     }
 
     // Initialized to work with Vault

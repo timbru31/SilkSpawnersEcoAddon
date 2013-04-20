@@ -49,14 +49,27 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	    return;
 	}
 	// If he has the money, charge it
-	if (plugin.economy.has(player.getName(), price)) {
-	    plugin.economy.withdrawPlayer(player.getName(), price);
-	    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
-	}
-	// Else notify and cancel
-	else {
-	    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
-	    event.setCancelled(true);
+	if (plugin.chargeXP) {
+	    int totalXP = player.getTotalExperience();
+	    if (totalXP >= price) {
+		totalXP -= price;
+		player.setTotalExperience(totalXP);
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
+	    }
+	    else {
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
+		event.setCancelled(true);
+	    }
+	} else {
+	    if (plugin.economy.has(player.getName(), price)) {
+		plugin.economy.withdrawPlayer(player.getName(), price);
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
+	    }
+	    // Else notify and cancel
+	    else {
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
+		event.setCancelled(true);
+	    }
 	}
     }
 }
