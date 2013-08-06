@@ -38,7 +38,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	    return;
 	}
 	// Get name and replace occurring spaces
-	String name = su.getCreatureName(entityID).toLowerCase().replaceAll(" ", "");
+	String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
 	double price = plugin.defaultPrice;
 	// Is a specific price listed, yes get it!
 	if (plugin.config.contains(name)) {

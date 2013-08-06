@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>de.dustplanet</groupId>
 			<artifactId>SilkSpawners</artifactId>
-			<version>3.3.2-SNAPSHOT</version>
+			<version>3.4-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bukkit</groupId>
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>Vault</artifactId>
-			<version>1.2.26-SNAPSHOT</version>
+			<version>1.2.27-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
