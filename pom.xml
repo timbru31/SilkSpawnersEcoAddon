@@ -37,12 +37,12 @@
 		<dependency>
 			<groupId>de.dustplanet</groupId>
 			<artifactId>SilkSpawners</artifactId>
-			<version>3.3-SNAPSHOT</version>
+			<version>3.3.2-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>bukkit</artifactId>
-			<version>1.6.1-R0.1-SNAPSHOT</version>
+			<version>1.6.2-R0.2-SNAPSHOT</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
