@@ -28,7 +28,11 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	Player player = event.getPlayer();
 	short entityID = event.getEntityID();
 	// Don't charge the same mob more than 1 time
-	short spawnerID = event.getSpawner().getSpawnedType().getTypeId();
+	// TODO Implement a new way to check for old entityID of the spawner block or the itemstack [durability field]
+	short spawnerID = 0;
+	if (event.getSpawner() != null) {
+	    spawnerID = event.getSpawner().getSpawnedType().getTypeId();
+	}
 	if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
 	    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sameMob")));
 	    return;
