@@ -8,4 +8,5 @@ permissions:
     silkspawners.free:
         description: Allows you to bypass the economy check
         default: op
-depend: [SilkSpawners, Vault]
+depend: [SilkSpawners]
+softdepend: [Vault]
