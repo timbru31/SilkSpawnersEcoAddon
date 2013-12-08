@@ -1,5 +1,5 @@
 This is the README of SilkSpawnersEcoAddon!
-This plugin adds an optional economy feature (via Vault) to charge the chaning of spawners
+This plugin adds an optional economy feature (via Vault) to charge the changing of spawners
 Thanks for using!
 
 This plugin sends usage statistics! If you wish to disable the usage stats, look at plugins/PluginMetrics/config.yml!
