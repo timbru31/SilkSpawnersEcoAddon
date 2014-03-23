@@ -5,7 +5,7 @@
 	<artifactId>SilkSpawnersEcoAddon</artifactId>
 	<version>1.0.2-SNAPSHOT</version>
 	<name>SilkSpawnersEcoAddon</name>
-	<url>http://dev.bukkit.org/server-mods/silkspawnersecoaddon/</url>
+	<url>http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon/</url>
 
 	<!-- Encode in UTF-8 -->
 	<properties>
