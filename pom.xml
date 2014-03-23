@@ -119,7 +119,6 @@
 					<include>plugin.yml</include>
 					<include>config.yml</include>
 					<include>localization.yml</include>
-					<include>README.txt</include>
 				</includes>
 			</resource>
 			<resource>
@@ -127,7 +126,8 @@
 				<filtering>true</filtering>
 				<directory>${basedir}</directory>
 				<includes>
-					<include>README.txt</include>
+					<include>README.md</include>
+					<include>LICENSE.md</include>
 				</includes>
 			</resource>
 		</resources>
@@ -146,5 +146,5 @@
 		<url>http://ci.dustplanet.de/job/SilkSpawnersEcoAddon</url>
 		<system>jenkins</system>
 	</ciManagement>
-	<description>Optional addon for SilkSpawners to charge (via Vault) for changing monster spawners</description>
+	<description>Optional addon for SilkSpawners to charge (via Vault or XP) for changing monster spawners</description>
 </project>
