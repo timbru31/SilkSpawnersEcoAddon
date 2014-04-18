@@ -39,9 +39,8 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	// Is a specific price listed, yes get it!
 	if (plugin.config.contains(name)) {
 	    price = plugin.getConfig().getDouble(name);
-	}
-	// Maybe only the ID is delivered?
-	else if (plugin.config.contains(Short.toString(entityID))) {
+	} else if (plugin.config.contains(Short.toString(entityID))) {
+	    // Maybe only the ID is delivered?
 	    price = plugin.config.getDouble(Short.toString(entityID));
 	}
 	// If price is 0 or player has free perm, stop here!
@@ -55,8 +54,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 		totalXP -= price;
 		player.setTotalExperience(totalXP);
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
-	    }
-	    else {
+	    } else {
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
 		event.setCancelled(true);
 	    }
@@ -64,9 +62,8 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	    if (plugin.economy.has(player.getName(), price)) {
 		plugin.economy.withdrawPlayer(player.getName(), price);
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
-	    }
-	    // Else notify and cancel
-	    else {
+	    } else {
+		// Else notify and cancel
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
 		event.setCancelled(true);
 	    }
