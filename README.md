@@ -50,7 +50,7 @@ Please follow the Sun Coding Guidelines, thanks!
 #### Disabling Metrics
 The file ../plugins/Plugin Metrics/config.yml contains an option to *opt-out*
 
-#### The following data is **read** from the server in some way or another:
+#### The following data is **read** from the server in some way or another
 * File Contents of plugins/Plugin Metrics/config.yml (created if not existent)
 * Players currently online (not max player count)
 * Server version string (the same version string you see in /version)
