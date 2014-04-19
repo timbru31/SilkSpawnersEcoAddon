@@ -45,19 +45,19 @@ Please follow the Sun Coding Guidelines, thanks!
 ## Usage statistics
 [![MCStats](http://mcstats.org/signature/SilkSpawnersEcoAddon.png)](http://mcstats.org/plugin/SilkSpawnersEcoAddon)
 
-## Information about the data usage collection Metrics
+## Data usage collection of Metrics
 
-### Disabling Metrics
+#### Disabling Metrics
 The file ../plugins/Plugin Metrics/config.yml contains an option to *opt-out*
 
-The following data is **read** from the server in some way or another:
+#### The following data is **read** from the server in some way or another:
 * File Contents of plugins/Plugin Metrics/config.yml (created if not existent)
 * Players currently online (not max player count)
 * Server version string (the same version string you see in /version)
 * Plugin version of the metrics-supported plugin
 * Mineshafter status - it does not properly propagate Metrics requests however it is a very simple check and does not read the filesystem
 
-The following data is **sent** to http://mcstats.org and can be seen under http://mcstats.org/plugin/SilkSpawnersEcoAddon
+#### The following data is **sent** to http://mcstats.org and can be seen under http://mcstats.org/plugin/SilkSpawnersEcoAddon
 * Metrics revision of the implementing class
 * Server's GUID
 * Players currently online (not max player count)
