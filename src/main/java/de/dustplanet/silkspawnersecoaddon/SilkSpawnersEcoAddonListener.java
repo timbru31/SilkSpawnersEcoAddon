@@ -1,9 +1,12 @@
 package de.dustplanet.silkspawnersecoaddon;
 
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
 import de.dustplanet.util.SilkUtil;
 
@@ -33,6 +36,21 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 	    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sameMob")));
 	    return;
 	}
+
+	// Hook into the pending confirmation list
+	if (plugin.confirmation) {
+	    UUID name = player.getUniqueId();
+	    // Notify the player and cancel event
+	    if (!plugin.pendingConfirmationList.contains(name)) {
+		plugin.pendingConfirmationList.add(name);
+		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("confirmationPending")));
+		event.setCancelled(true);
+	    } else {
+		// Now remove the player and continue normal procedure
+		plugin.pendingConfirmationList.remove(name);
+	    }
+	}
+
 	// Get name and replace occurring spaces
 	String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
 	double price = plugin.defaultPrice;
