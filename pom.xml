@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>de.dustplanet</groupId>
 			<artifactId>SilkSpawners</artifactId>
-			<version>3.4-SNAPSHOT</version>
+			<version>3.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bukkit</groupId>
