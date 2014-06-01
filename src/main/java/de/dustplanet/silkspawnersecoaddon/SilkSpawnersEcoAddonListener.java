@@ -77,8 +77,8 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 		event.setCancelled(true);
 	    }
 	} else {
-	    if (plugin.economy.has(player.getName(), price)) {
-		plugin.economy.withdrawPlayer(player.getName(), price);
+	    if (plugin.economy.has(player, price)) {
+		plugin.economy.withdrawPlayer(player, price);
 		player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
 	    } else {
 		// Else notify and cancel
