@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -17,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.Metrics;
 
 //Vault
-import net.milkbowl.vault.Vault;
 import net.milkbowl.vault.economy.Economy;
 
 /**
@@ -29,7 +27,7 @@ import net.milkbowl.vault.economy.Economy;
 public class SilkSpawnersEcoAddon extends JavaPlugin {
     public FileConfiguration config;
     private File configFile;
-    public Economy economy;
+    public Economy econ;
     public double defaultPrice = 10.5;
     public boolean chargeXP, confirmation;
     public ArrayList<UUID> pendingConfirmationList = new ArrayList<UUID>();
@@ -41,17 +39,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     public void onEnable() {
-	// Check for Vault
-	Plugin vault = getServer().getPluginManager().getPlugin("Vault");
-	if (vault != null && vault instanceof Vault) {
-	    // If Vault is enabled, load the economy
-	    getLogger().info("Loaded Vault successfully");
-	    setupEconomy();
-	} else {
-	    // Else tell the admin about the missing of Vault
-	    getLogger().severe("Vault was not found! XP charging is now ON...");
-	}
-
 	// Config
 	configFile = new File(getDataFolder(), "config.yml");
 	if (!configFile.exists()) {
@@ -68,8 +55,12 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	config = getConfig();
 	loadConfig();
 
-	// Now we need to check regardless of the setting in the conifg if we need to charge XP
-	if (vault == null || !(vault instanceof Vault)) {
+	if (setupEconomy()) {
+	    // If Vault is enabled, load the economy
+	    getLogger().info("Loaded Vault successfully");
+	} else {
+	    // Else tell the admin about the missing of Vault
+	    getLogger().severe("Vault was not found! XP charging is now ON...");
 	    chargeXP = true;
 	}
 
@@ -118,11 +109,15 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     // Initialized to work with Vault
     private boolean setupEconomy() {
-	RegisteredServiceProvider<Economy> economyProvider = getServer().getServicesManager().getRegistration(net.milkbowl.vault.economy.Economy.class);
-	if (economyProvider != null) {
-	    economy = economyProvider.getProvider();
-	}
-	return (economy != null);
+        if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            return false;
+        }
+        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        if (rsp == null) {
+            return false;
+        }
+        econ = rsp.getProvider();
+        return econ != null;
     }
 
     // If no config is found, copy the default one(s)!
