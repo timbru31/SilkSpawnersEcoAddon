@@ -30,7 +30,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     public Economy econ;
     public double defaultPrice = 10.5;
     public boolean chargeXP, confirmation;
-    public ArrayList<UUID> pendingConfirmationList = new ArrayList<UUID>();
+    public ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
 
     public void onDisable() {
@@ -43,7 +43,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	configFile = new File(getDataFolder(), "config.yml");
 	if (!configFile.exists()) {
 	    if (configFile.getParentFile().mkdirs()) {
-		copy(getResource("config.yml"), configFile);
+		copy("config.yml", configFile);
 	    } else {
 		getLogger().severe("The config folder could NOT be created, make sure it's writable!");
 		getLogger().severe("Disabling now!");
@@ -121,10 +121,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     // If no config is found, copy the default one(s)!
-    private void copy(InputStream in, File file) {
-	OutputStream out = null;
-	try {
-	    out = new FileOutputStream(file);
+    private void copy(String yml, File file) {
+	try(OutputStream out = new FileOutputStream(file);
+		InputStream in = getResource(yml)) {
 	    byte[] buf = new byte[1024];
 	    int len;
 	    while ((len = in.read(buf)) > 0) {
@@ -133,23 +132,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 	} catch (IOException e) {
 	    getLogger().warning("Failed to copy the default config! (I/O)");
 	    e.printStackTrace();
-	} finally {
-	    try {
-		if (out != null) {
-		    out.close();
-		}
-	    } catch (IOException e) {
-		getLogger().warning("Failed to close the streams! (I/O -> Output)");
-		e.printStackTrace();
-	    }
-	    try {
-		if (in != null) {
-		    in.close();
-		}
-	    } catch (IOException e) {
-		getLogger().warning("Failed to close the streams! (I/O -> Input)");
-		e.printStackTrace();
-	    }
 	}
     }
 }
