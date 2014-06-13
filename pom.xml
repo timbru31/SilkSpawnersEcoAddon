@@ -12,18 +12,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-
-	<!-- Testing -->
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>findbugs-maven-plugin</artifactId>
-				<version>2.5.5-SNAPSHOT</version>
-			</plugin>
-		</plugins>
-	</reporting>
-
 	<!-- Repositories -->
 	<repositories>
 		<repository>
