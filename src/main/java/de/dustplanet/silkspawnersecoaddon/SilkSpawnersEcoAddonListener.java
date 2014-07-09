@@ -10,15 +10,15 @@ import org.bukkit.event.Listener;
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
 import de.dustplanet.util.SilkUtil;
 
+/**
+ * This is the listener of the custom event to charge the user
+ * 
+ * @author xGhOsTkiLLeRx
+ */
+
 public class SilkSpawnersEcoAddonListener implements Listener {
     private SilkSpawnersEcoAddon plugin;
     private SilkUtil su;
-
-    /**
-     * This is the listener of the custom event to charge the user
-     * 
-     * @author xGhOsTkiLLeRx
-     */
 
     public SilkSpawnersEcoAddonListener(SilkSpawnersEcoAddon instance) {
 	plugin = instance;
