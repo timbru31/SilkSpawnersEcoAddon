@@ -34,77 +34,77 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
 
     public void onDisable() {
-	getServer().getScheduler().cancelTasks(this);
-	pendingConfirmationList.clear();
+        getServer().getScheduler().cancelTasks(this);
+        pendingConfirmationList.clear();
     }
 
     public void onEnable() {
-	// Config
-	configFile = new File(getDataFolder(), "config.yml");
-	if (!configFile.exists()) {
-	    if (configFile.getParentFile().mkdirs()) {
-		copy("config.yml", configFile);
-	    } else {
-		getLogger().severe("The config folder could NOT be created, make sure it's writable!");
-		getLogger().severe("Disabling now!");
-		setEnabled(false);
-		return;
-	    }
-	}
+        // Config
+        configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            if (configFile.getParentFile().mkdirs()) {
+                copy("config.yml", configFile);
+            } else {
+                getLogger().severe("The config folder could NOT be created, make sure it's writable!");
+                getLogger().severe("Disabling now!");
+                setEnabled(false);
+                return;
+            }
+        }
 
-	config = getConfig();
-	loadConfig();
+        config = getConfig();
+        loadConfig();
 
-	if (setupEconomy()) {
-	    // If Vault is enabled, load the economy
-	    getLogger().info("Loaded Vault successfully");
-	} else {
-	    // Else tell the admin about the missing of Vault
-	    getLogger().severe("Vault was not found! XP charging is now ON...");
-	    chargeXP = true;
-	}
+        if (setupEconomy()) {
+            // If Vault is enabled, load the economy
+            getLogger().info("Loaded Vault successfully");
+        } else {
+            // Else tell the admin about the missing of Vault
+            getLogger().severe("Vault was not found! XP charging is now ON...");
+            chargeXP = true;
+        }
 
-	// Listeners
-	getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonListener(this), this);
+        // Listeners
+        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonListener(this), this);
 
-	// Metrics
-	try {
-	    Metrics metrics = new Metrics(this);
-	    metrics.start();
-	} catch (IOException e) {
-	    getLogger().info("Couldn't start Metrics, please report this!");
-	    e.printStackTrace();
-	}
+        // Metrics
+        try {
+            Metrics metrics = new Metrics(this);
+            metrics.start();
+        } catch (IOException e) {
+            getLogger().info("Couldn't start Metrics, please report this!");
+            e.printStackTrace();
+        }
 
-	// Task if needed
-	if (confirmation) {
-	    getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-		public void run() {
-		    // Clear pending list
-		    pendingConfirmationList.clear();
-		}
-	    }, getConfig().getInt("confirmation.delay") * 20L, getConfig().getInt("confirmation.delay") * 20L);
-	}
+        // Task if needed
+        if (confirmation) {
+            getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+                public void run() {
+                    // Clear pending list
+                    pendingConfirmationList.clear();
+                }
+            }, getConfig().getInt("confirmation.delay") * 20L, getConfig().getInt("confirmation.delay") * 20L);
+        }
     }
 
     private void loadConfig() {
-	config.options().header("You can configure every entityID/name (without spaces) or a default!");
-	config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
-	config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
-	config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
-	config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs money, if you want to continue, do the action again!");
-	config.addDefault("chargeSameMob", false);
-	config.addDefault("chargeXP", false);
-	config.addDefault("confirmation.enabled", false);
-	config.addDefault("confirmation.delay", 30);
-	config.addDefault("default", 10.5);
-	config.addDefault("pig", 7.25);
-	config.addDefault("cow", 0.00);
-	config.options().copyDefaults(true);
-	saveConfig();
-	defaultPrice = config.getDouble("default");
-	chargeXP = config.getBoolean("chargeXP");
-	confirmation = config.getBoolean("confirmation.enabled");
+        config.options().header("You can configure every entityID/name (without spaces) or a default!");
+        config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
+        config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
+        config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
+        config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs money, if you want to continue, do the action again!");
+        config.addDefault("chargeSameMob", false);
+        config.addDefault("chargeXP", false);
+        config.addDefault("confirmation.enabled", false);
+        config.addDefault("confirmation.delay", 30);
+        config.addDefault("default", 10.5);
+        config.addDefault("pig", 7.25);
+        config.addDefault("cow", 0.00);
+        config.options().copyDefaults(true);
+        saveConfig();
+        defaultPrice = config.getDouble("default");
+        chargeXP = config.getBoolean("chargeXP");
+        confirmation = config.getBoolean("confirmation.enabled");
     }
 
     // Initialized to work with Vault
@@ -122,16 +122,16 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     // If no config is found, copy the default one(s)!
     private void copy(String yml, File file) {
-	try (OutputStream out = new FileOutputStream(file);
-		InputStream in = getResource(yml)) {
-	    byte[] buf = new byte[1024];
-	    int len;
-	    while ((len = in.read(buf)) > 0) {
-		out.write(buf, 0, len);
-	    }
-	} catch (IOException e) {
-	    getLogger().warning("Failed to copy the default config! (I/O)");
-	    e.printStackTrace();
-	}
+        try (OutputStream out = new FileOutputStream(file);
+                InputStream in = getResource(yml)) {
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } catch (IOException e) {
+            getLogger().warning("Failed to copy the default config! (I/O)");
+            e.printStackTrace();
+        }
     }
 }
