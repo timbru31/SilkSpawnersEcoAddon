@@ -11,20 +11,35 @@ import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
 import de.dustplanet.util.SilkUtil;
 
 /**
- * This is the listener of the custom event to charge the user
- * 
+ * This is the listener of the custom event to charge the user.
+ *
  * @author xGhOsTkiLLeRx
  */
 
 public class SilkSpawnersEcoAddonListener implements Listener {
+    /**
+     * SilkSpawnersEcoAddon instance.
+     */
     private SilkSpawnersEcoAddon plugin;
+    /**
+     * SilkUtil instance.
+     */
     private SilkUtil su;
 
+    /**
+     * Creates a new SilkSpawnersEcoAddonListener.
+     * SilkUtil is hooked with a static hook of SilkSpawners.
+     * @param instance of SilkSpawnersEcoAddon
+     */
     public SilkSpawnersEcoAddonListener(SilkSpawnersEcoAddon instance) {
         plugin = instance;
         su = SilkUtil.hookIntoSilkSpanwers();
     }
 
+    /**
+     * Called when a spawner is in state of changing
+     * @param event custom SilkSpawnersSpawnerChangeEvent
+     */
     @EventHandler
     public void onSpawnerChange(SilkSpawnersSpawnerChangeEvent event) {
         // Get information
@@ -33,56 +48,56 @@ public class SilkSpawnersEcoAddonListener implements Listener {
         // Don't charge the same mob more than 1 time
         short spawnerID = event.getOldEntityID();
         if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("sameMob")));
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("sameMob")));
             return;
         }
 
         // Hook into the pending confirmation list
-        if (plugin.confirmation) {
+        if (plugin.confirmation()) {
             UUID name = player.getUniqueId();
             // Notify the player and cancel event
-            if (!plugin.pendingConfirmationList.contains(name)) {
-                plugin.pendingConfirmationList.add(name);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("confirmationPending")));
+            if (!plugin.getPendingConfirmationList().contains(name)) {
+                plugin.getPendingConfirmationList().add(name);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("confirmationPending")));
                 event.setCancelled(true);
             } else {
                 // Now remove the player and continue normal procedure
-                plugin.pendingConfirmationList.remove(name);
+                plugin.getPendingConfirmationList().remove(name);
             }
         }
 
         // Get name and replace occurring spaces
         String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
-        double price = plugin.defaultPrice;
+        double price = plugin.getDefaultPrice();
         // Is a specific price listed, yes get it!
-        if (plugin.config.contains(name)) {
+        if (plugin.getConfig().contains(name)) {
             price = plugin.getConfig().getDouble(name);
-        } else if (plugin.config.contains(Short.toString(entityID))) {
+        } else if (plugin.getConfig().contains(Short.toString(entityID))) {
             // Maybe only the ID is delivered?
-            price = plugin.config.getDouble(Short.toString(entityID));
+            price = plugin.getConfig().getDouble(Short.toString(entityID));
         }
         // If price is 0 or player has free perm, stop here!
         if (price <= 0 || player.hasPermission("silkspawners.free")) {
             return;
         }
         // If he has the money, charge it
-        if (plugin.chargeXP) {
+        if (plugin.chargeXP()) {
             int totalXP = player.getTotalExperience();
             if (totalXP >= price) {
                 totalXP -= price;
                 player.setTotalExperience(totalXP);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
             } else {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAfford")));
                 event.setCancelled(true);
             }
         } else {
-            if (plugin.econ.has(player, price)) {
-                plugin.econ.withdrawPlayer(player, price);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("afford")).replace("%money%", Double.toString(price)));
+            if (plugin.getEcon().has(player, price)) {
+                plugin.getEcon().withdrawPlayer(player, price);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
             } else {
                 // Else notify and cancel
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.config.getString("cantAfford")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAfford")));
                 event.setCancelled(true);
             }
         }

@@ -1,43 +1,72 @@
 package de.dustplanet.silkspawnersecoaddon;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
-
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-
-// Metrics
-import org.mcstats.Metrics;
 
 //Vault
 import net.milkbowl.vault.economy.Economy;
 
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+// Metrics
+import org.mcstats.Metrics;
+
 /**
- * General stuff (config)
- * 
+ * General stuff (config).
+ *
  * @author xGhOsTkiLLeRx
  */
 
 public class SilkSpawnersEcoAddon extends JavaPlugin {
-    public FileConfiguration config;
+    /**
+     * Config of SilkSpawnersEcoAddon.
+     */
+    private FileConfiguration config;
+    /**
+     * Real file of the config.
+     */
     private File configFile;
-    public Economy econ;
-    public double defaultPrice = 10.5;
-    public boolean chargeXP, confirmation;
-    public ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
+    /**
+     * Economy provider with Vault.
+     */
+    private Economy econ;
+    /**
+     * Default price for charging.
+     */
+    private double defaultPrice = 10.5;
+    /**
+     * Status if XP charging is on or off.
+     */
+    private boolean chargeXP;
+    /**
+     * Status of the confirmation feature.
+     */
+    private boolean confirmation;
+    /**
+     * List of pending player who need to confirm the change.
+     */
+    private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
 
+    /**
+     * Disabled SilkSpawnersEcoAddon and cleans stuff.
+     */
+    @Override
     public void onDisable() {
         getServer().getScheduler().cancelTasks(this);
-        pendingConfirmationList.clear();
+        getPendingConfirmationList().clear();
     }
 
+    /**
+     * Loads SilkSpawnersEcodAddon.
+     */
+    @Override
     public void onEnable() {
         // Config
         configFile = new File(getDataFolder(), "config.yml");
@@ -61,7 +90,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         } else {
             // Else tell the admin about the missing of Vault
             getLogger().severe("Vault was not found! XP charging is now ON...");
-            chargeXP = true;
+            setChargeXP(true);
         }
 
         // Listeners
@@ -77,16 +106,20 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         }
 
         // Task if needed
-        if (confirmation) {
+        if (confirmation()) {
             getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+                @Override
                 public void run() {
                     // Clear pending list
-                    pendingConfirmationList.clear();
+                    getPendingConfirmationList().clear();
                 }
             }, getConfig().getInt("confirmation.delay") * 20L, getConfig().getInt("confirmation.delay") * 20L);
         }
     }
 
+    /**
+     * Loads the default config and values.
+     */
     private void loadConfig() {
         config.options().header("You can configure every entityID/name (without spaces) or a default!");
         config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
@@ -102,12 +135,16 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("cow", 0.00);
         config.options().copyDefaults(true);
         saveConfig();
-        defaultPrice = config.getDouble("default");
-        chargeXP = config.getBoolean("chargeXP");
-        confirmation = config.getBoolean("confirmation.enabled");
+        setDefaultPrice(config.getDouble("default"));
+        setChargeXP(config.getBoolean("chargeXP"));
+        setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
     // Initialized to work with Vault
+    /**
+     * Hook into Vault.
+     * @return whether the hook into Vault was successful
+     */
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -116,11 +153,16 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         if (rsp == null) {
             return false;
         }
-        econ = rsp.getProvider();
-        return econ != null;
+        setEcon(rsp.getProvider());
+        return getEcon() != null;
     }
 
     // If no config is found, copy the default one(s)!
+    /**
+     * Copies default config file.
+     * @param yml the yml file string
+     * @param file the actual file
+     */
     private void copy(String yml, File file) {
         try (OutputStream out = new FileOutputStream(file);
                 InputStream in = getResource(yml)) {
@@ -133,5 +175,85 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
             getLogger().warning("Failed to copy the default config! (I/O)");
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Gets the default price used for charging.
+     * @return the default price
+     */
+    public double getDefaultPrice() {
+        return defaultPrice;
+    }
+
+    /**
+     * Sets the default price used for charging.
+     * @param defaultPrice the default price
+     */
+    public void setDefaultPrice(double defaultPrice) {
+        this.defaultPrice = defaultPrice;
+    }
+
+    /**
+     * Gets current state if XP charging is on.
+     * @return the result
+     */
+    public boolean chargeXP() {
+        return chargeXP;
+    }
+
+    /**
+     * Sets XP charging on or off.
+     * @param chargeXP the new state
+     */
+    public void setChargeXP(boolean chargeXP) {
+        this.chargeXP = chargeXP;
+    }
+
+    /**
+     * Returns Vault economy instance.
+     * @return economy or if not found null
+     */
+    public Economy getEcon() {
+        return econ;
+    }
+
+    /**
+     * Sets the Vault economy.
+     * @param econ the Vault econ
+     */
+    public void setEcon(Economy econ) {
+        this.econ = econ;
+    }
+
+    /**
+     * Gets the list of people who need to confirm the change.
+     * @return the list of players
+     */
+    public ArrayList<UUID> getPendingConfirmationList() {
+        return pendingConfirmationList;
+    }
+
+    /**
+     * Sets the pending list of players.
+     * @param pendingConfirmationList the new player pending list
+     */
+    public void setPendingConfirmationList(ArrayList<UUID> pendingConfirmationList) {
+        this.pendingConfirmationList = pendingConfirmationList;
+    }
+
+    /**
+     * Returns if the confirmation feature is used.
+     * @return the result
+     */
+    public boolean confirmation() {
+        return confirmation;
+    }
+
+    /**
+     * Sets if configuration feature should be used.
+     * @param confirmation true or false
+     */
+    public void setConfirmation(boolean confirmation) {
+        this.confirmation = confirmation;
     }
 }
