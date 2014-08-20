@@ -37,7 +37,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
     }
 
     /**
-     * Called when a spawner is in state of changing
+     * Called when a spawner is in state of changing.
      * @param event custom SilkSpawnersSpawnerChangeEvent
      */
     @EventHandler
