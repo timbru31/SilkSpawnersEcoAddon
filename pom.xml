@@ -131,22 +131,6 @@
     </resources>
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>2.13</version>
-        <configuration>
-          <configLocation>
-            https://playground.dustpla.net/checkstyle.xml
-          </configLocation>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-
-
   <!-- Github information -->
   <scm>
     <url>https://github.com/xGhOsTkiLLeRx/SilkSpawnersEcoAddon</url>
