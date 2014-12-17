@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.dustplanet</groupId>
   <artifactId>SilkSpawnersEcoAddon</artifactId>
-  <version>1.0.4</version>
+  <version>1.0.5-SNAPSHOT</version>
   <name>SilkSpawnersEcoAddon</name>
   <url>http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon/</url>
 
@@ -144,7 +144,7 @@
   <scm>
     <url>https://github.com/xGhOsTkiLLeRx/SilkSpawnersEcoAddon</url>
     <connection>scm:git:git://github.com/xGhOsTkiLLeRx/SilkSpawnersEcoAddon.git</connection>
-    <tag>SilkSpawnersEcoAddon-1.0.4</tag>
+    <tag>master</tag>
     <developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/SilkSpawnersEcoAddon.git</developerConnection>
   </scm>
 
