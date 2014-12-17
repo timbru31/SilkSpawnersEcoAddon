@@ -128,6 +128,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs money, if you want to continue, do the action again!");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
+        config.addDefault("chargeMultipleAmounts", false);
         config.addDefault("confirmation.enabled", false);
         config.addDefault("confirmation.delay", 30);
         config.addDefault("default", 10.5);

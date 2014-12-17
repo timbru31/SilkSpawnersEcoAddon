@@ -80,6 +80,10 @@ public class SilkSpawnersEcoAddonListener implements Listener {
         if (price <= 0 || player.hasPermission("silkspawners.free")) {
             return;
         }
+        // Charge for the amount (multiply)
+        if (plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
+           price *= event.getAmount();
+        }
         // If he has the money, charge it
         if (plugin.chargeXP()) {
             int totalXP = player.getTotalExperience();

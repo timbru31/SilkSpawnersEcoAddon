@@ -5,6 +5,7 @@ sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!
 confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs money, if you want to continue, do the action again!"
 chargeSameMob: false
 chargeXP: false
+chargeMultipleAmounts: false
 confirmation:
   enabled: false
   delay: 30
