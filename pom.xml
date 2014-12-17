@@ -30,6 +30,10 @@
       <id>SilkSpawners-Repo</id>
       <url>http://ci.dustplanet.de/plugin/repository/everything</url>
     </repository>
+    <repository>
+      <id>spigot-repo</id>
+      <url>http://repo.md-5.net/content/groups/public</url>
+    </repository>
   </repositories>
 
   <!-- Dependencies -->
@@ -42,7 +46,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.7.10-R0.1-SNAPSHOT</version>
+      <version>1.8-R0.1-SNAPSHOT</version>
       <type>jar</type>
       <scope>compile</scope>
     </dependency>
@@ -66,6 +70,11 @@
     <defaultGoal>clean compile package</defaultGoal>
     <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.1</version>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
