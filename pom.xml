@@ -40,7 +40,7 @@
     <dependency>
       <groupId>de.dustplanet</groupId>
       <artifactId>SilkSpawners</artifactId>
-      <version>3.6.1-SNAPSHOT</version>
+      <version>3.6.2-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.bukkit</groupId>
@@ -55,7 +55,7 @@
     <dependency>
       <groupId>net.milkbowl.vault</groupId>
       <artifactId>VaultAPI</artifactId>
-      <version>1.4</version>
+      <version>1.5</version>
     </dependency>
   </dependencies>
 
