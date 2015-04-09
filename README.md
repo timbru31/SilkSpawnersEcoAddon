@@ -22,7 +22,7 @@ Please see [LICENSE.md](LICENSE.md) for more information.
 cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
 sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
-confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs money, if you want to continue, do the action again!"
+confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!"
 chargeSameMob: false
 chargeXP: false
 chargeMultipleAmounts: false

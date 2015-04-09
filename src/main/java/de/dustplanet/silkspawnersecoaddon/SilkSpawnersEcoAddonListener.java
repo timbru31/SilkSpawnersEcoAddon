@@ -29,6 +29,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
     /**
      * Creates a new SilkSpawnersEcoAddonListener.
      * SilkUtil is hooked with a static hook of SilkSpawners.
+     *
      * @param instance of SilkSpawnersEcoAddon
      */
     public SilkSpawnersEcoAddonListener(SilkSpawnersEcoAddon instance) {
@@ -38,6 +39,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
 
     /**
      * Called when a spawner is in state of changing.
+     *
      * @param event custom SilkSpawnersSpawnerChangeEvent
      */
     @EventHandler
@@ -52,20 +54,6 @@ public class SilkSpawnersEcoAddonListener implements Listener {
             return;
         }
 
-        // Hook into the pending confirmation list
-        if (plugin.confirmation()) {
-            UUID name = player.getUniqueId();
-            // Notify the player and cancel event
-            if (!plugin.getPendingConfirmationList().contains(name)) {
-                plugin.getPendingConfirmationList().add(name);
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("confirmationPending")));
-                event.setCancelled(true);
-            } else {
-                // Now remove the player and continue normal procedure
-                plugin.getPendingConfirmationList().remove(name);
-            }
-        }
-
         // Get name and replace occurring spaces
         String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
         double price = plugin.getDefaultPrice();
@@ -76,13 +64,28 @@ public class SilkSpawnersEcoAddonListener implements Listener {
             // Maybe only the ID is delivered?
             price = plugin.getConfig().getDouble(Short.toString(entityID));
         }
+
+        // Hook into the pending confirmation list
+        if (plugin.confirmation()) {
+            UUID playerName = player.getUniqueId();
+            // Notify the player and cancel event
+            if (!plugin.getPendingConfirmationList().contains(playerName)) {
+                plugin.getPendingConfirmationList().add(playerName);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("confirmationPending")).replace("%money%", Double.toString(price)));
+                event.setCancelled(true);
+            } else {
+                // Now remove the player and continue normal procedure
+                plugin.getPendingConfirmationList().remove(playerName);
+            }
+        }
+
         // If price is 0 or player has free perm, stop here!
         if (price <= 0 || player.hasPermission("silkspawners.free")) {
             return;
         }
         // Charge for the amount (multiply)
         if (plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
-           price *= event.getAmount();
+            price *= event.getAmount();
         }
         // If he has the money, charge it
         if (plugin.chargeXP()) {

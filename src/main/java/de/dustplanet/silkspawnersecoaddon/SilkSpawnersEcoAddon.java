@@ -53,7 +53,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
      */
     private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
-
     /**
      * Disabled SilkSpawnersEcoAddon and cleans stuff.
      */
@@ -125,7 +124,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
         config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
         config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
-        config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs money, if you want to continue, do the action again!");
+        config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
         config.addDefault("chargeMultipleAmounts", false);
@@ -144,6 +143,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     // Initialized to work with Vault
     /**
      * Hook into Vault.
+     *
      * @return whether the hook into Vault was successful
      */
     private boolean setupEconomy() {
@@ -161,12 +161,12 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     // If no config is found, copy the default one(s)!
     /**
      * Copies default config file.
+     *
      * @param yml the yml file string
      * @param file the actual file
      */
     private void copy(String yml, File file) {
-        try (OutputStream out = new FileOutputStream(file);
-                InputStream in = getResource(yml)) {
+        try (OutputStream out = new FileOutputStream(file); InputStream in = getResource(yml)) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
@@ -180,6 +180,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Gets the default price used for charging.
+     *
      * @return the default price
      */
     public double getDefaultPrice() {
@@ -188,6 +189,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Sets the default price used for charging.
+     *
      * @param defaultPrice the default price
      */
     public void setDefaultPrice(double defaultPrice) {
@@ -196,6 +198,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Gets current state if XP charging is on.
+     *
      * @return the result
      */
     public boolean chargeXP() {
@@ -204,6 +207,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Sets XP charging on or off.
+     *
      * @param chargeXP the new state
      */
     public void setChargeXP(boolean chargeXP) {
@@ -212,6 +216,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Returns Vault economy instance.
+     *
      * @return economy or if not found null
      */
     public Economy getEcon() {
@@ -220,6 +225,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Sets the Vault economy.
+     *
      * @param econ the Vault econ
      */
     public void setEcon(Economy econ) {
@@ -228,6 +234,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Gets the list of people who need to confirm the change.
+     *
      * @return the list of players
      */
     public ArrayList<UUID> getPendingConfirmationList() {
@@ -236,6 +243,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Sets the pending list of players.
+     *
      * @param pendingConfirmationList the new player pending list
      */
     public void setPendingConfirmationList(ArrayList<UUID> pendingConfirmationList) {
@@ -244,6 +252,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Returns if the confirmation feature is used.
+     *
      * @return the result
      */
     public boolean confirmation() {
@@ -252,6 +261,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     /**
      * Sets if configuration feature should be used.
+     *
      * @param confirmation true or false
      */
     public void setConfirmation(boolean confirmation) {
