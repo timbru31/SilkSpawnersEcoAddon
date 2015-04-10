@@ -73,6 +73,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
                 plugin.getPendingConfirmationList().add(playerName);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("confirmationPending")).replace("%money%", Double.toString(price)));
                 event.setCancelled(true);
+                return;
             } else {
                 // Now remove the player and continue normal procedure
                 plugin.getPendingConfirmationList().remove(playerName);
