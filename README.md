@@ -37,12 +37,16 @@ pig: 7.25
 cow: 0.00
 ````
 
-##Permission
+## Commands
+/silkspawnerseco reload - Reloads the config file (default: OP)
+
+## Permissions
 (Fallback to OPs, if no permissions system is found)
 
 | Permission node | Description |
 |:----------:|:----------:|
 | silkspawners.free | Bypasses the economy check |
+| silkspawners.reload | Allows access to the reload command |
 
 ## Support
 For support visit the dev.bukkit.org page: http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon
