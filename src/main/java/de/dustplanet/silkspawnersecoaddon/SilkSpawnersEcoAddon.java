@@ -58,8 +58,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
      */
     @Override
     public void onDisable() {
-        getServer().getScheduler().cancelTasks(this);
-        getPendingConfirmationList().clear();
+        disable();
     }
 
     /**
@@ -83,6 +82,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config = getConfig();
         loadConfig();
 
+        // CommandExecutor
+        getCommand("silkspawnerseco").setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
+
         if (setupEconomy()) {
             // If Vault is enabled, load the economy
             getLogger().info("Loaded Vault successfully");
@@ -104,16 +106,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
             e.printStackTrace();
         }
 
-        // Task if needed
-        if (confirmation()) {
-            getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-                @Override
-                public void run() {
-                    // Clear pending list
-                    getPendingConfirmationList().clear();
-                }
-            }, getConfig().getInt("confirmation.delay") * 20L, getConfig().getInt("confirmation.delay") * 20L);
-        }
+        // Register task
+        registerTask();
     }
 
     /**
@@ -125,6 +119,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
         config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
         config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
+        config.addDefault("noPermission", "&e[SilkSpawnersEco] &2You do not have the permission to perfom this operation!");
+        config.addDefault("commandUsage", "&e[SilkSpawnersEco] &2Command usage: /silkspawnerseco reload");
+        config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &4SilkSpawnersEcoAddon config file successfully reloaded.");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
         config.addDefault("chargeMultipleAmounts", false);
@@ -138,6 +135,27 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setDefaultPrice(config.getDouble("default"));
         setChargeXP(config.getBoolean("chargeXP"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
+    }
+
+    /**
+     * Reloads the configuration from the file
+     */
+    @Override
+    public void reloadConfig() {
+        disable();
+        this.reloadConfig();
+        setDefaultPrice(config.getDouble("default"));
+        setChargeXP(config.getBoolean("chargeXP"));
+        setConfirmation(config.getBoolean("confirmation.enabled"));
+        registerTask();
+    }
+
+    /**
+     * Clears all important data
+     */
+    private void disable() {
+        getServer().getScheduler().cancelTasks(this);
+        getPendingConfirmationList().clear();
     }
 
     // Initialized to work with Vault
@@ -175,6 +193,22 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         } catch (IOException e) {
             getLogger().warning("Failed to copy the default config! (I/O)");
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Registers task for confirmation list
+     */
+    private void registerTask() {
+        // Task if needed
+        if (confirmation()) {
+            getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+                @Override
+                public void run() {
+                    // Clear pending list
+                    getPendingConfirmationList().clear();
+                }
+            }, getConfig().getInt("confirmation.delay") * 20L, getConfig().getInt("confirmation.delay") * 20L);
         }
     }
 

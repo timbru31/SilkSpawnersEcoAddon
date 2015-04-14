@@ -12,8 +12,8 @@ This CraftBukkit plugin adds an optional economy feature (via Vault or XP) to ch
 * Metrics for usage statistics
 
 ## License
-This plugin is released under the  
-*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)* license.  
+This plugin is released under the
+*Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)* license.
 Please see [LICENSE.md](LICENSE.md) for more information.
 
 ## Standard config
@@ -23,6 +23,9 @@ cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this s
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
 sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
 confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!"
+noPermission: "&e[SilkSpawnersEco] &2You do not have the permission to perfom this operation!"
+commandUsage: "&e[SilkSpawnersEco] &2Command usage: /silkspawnerseco reload"
+reloadSuccess: "&e[SilkSpawnersEco] &4SilkSpawnersEcoAddon config file successfully reloaded."
 chargeSameMob: false
 chargeXP: false
 chargeMultipleAmounts: false
@@ -45,7 +48,7 @@ cow: 0.00
 For support visit the dev.bukkit.org page: http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon
 
 ## Pull Requests
-Feel free to submit any PRs here. :)  
+Feel free to submit any PRs here. :)
 Please follow the Sun Coding Guidelines, thanks!
 
 ## Usage statistics
@@ -73,5 +76,5 @@ The file ../plugins/Plugin Metrics/config.yml contains an option to *opt-out*
 ## Donation
 [![PayPal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif "Donation via PayPal")](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=T9TEV7Q88B9M2)
 
-![BitCoin](https://dl.dropboxusercontent.com/u/26476995/bitcoin_logo.png "Donation via BitCoins")  
+![BitCoin](https://dl.dropboxusercontent.com/u/26476995/bitcoin_logo.png "Donation via BitCoins")
 Address: 1NnrRgdy7CfiYN63vKHiypSi3MSctCP55C
