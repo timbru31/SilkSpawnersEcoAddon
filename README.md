@@ -23,9 +23,9 @@ cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this s
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
 sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
 confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!"
-noPermission: "&e[SilkSpawnersEco] &2You do not have the permission to perfom this operation!"
-commandUsage: "&e[SilkSpawnersEco] &2Command usage: /silkspawnerseco reload"
-reloadSuccess: "&e[SilkSpawnersEco] &4SilkSpawnersEcoAddon config file successfully reloaded."
+noPermission: "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!"
+commandUsage: "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload"
+reloadSuccess: "&e[SilkSpawnersEco] &2Config file successfully reloaded."
 chargeSameMob: false
 chargeXP: false
 chargeMultipleAmounts: false

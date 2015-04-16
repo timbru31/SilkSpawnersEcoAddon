@@ -66,7 +66,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
         }
 
         // Hook into the pending confirmation list
-        if (plugin.confirmation()) {
+        if (plugin.isConfirmation()) {
             UUID playerName = player.getUniqueId();
             // Notify the player and cancel event
             if (!plugin.getPendingConfirmationList().contains(playerName)) {
@@ -74,10 +74,9 @@ public class SilkSpawnersEcoAddonListener implements Listener {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("confirmationPending")).replace("%money%", Double.toString(price)));
                 event.setCancelled(true);
                 return;
-            } else {
-                // Now remove the player and continue normal procedure
-                plugin.getPendingConfirmationList().remove(playerName);
             }
+            // Now remove the player and continue normal procedure
+            plugin.getPendingConfirmationList().remove(playerName);
         }
 
         // If price is 0 or player has free perm, stop here!
@@ -89,11 +88,13 @@ public class SilkSpawnersEcoAddonListener implements Listener {
             price *= event.getAmount();
         }
         // If he has the money, charge it
-        if (plugin.chargeXP()) {
+        if (plugin.isChargeXP()) {
             int totalXP = player.getTotalExperience();
             if (totalXP >= price) {
                 totalXP -= price;
-                player.setTotalExperience(totalXP);
+                player.setTotalExperience(0);
+                player.setLevel(0);
+                player.giveExp(totalXP);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
             } else {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAfford")));

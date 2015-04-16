@@ -4,6 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 
 public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
     /**
@@ -22,10 +23,10 @@ public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 1 || args[0].equalsIgnoreCase("reload")) {
+        if (args.length != 1 || !args[0].equalsIgnoreCase("reload")) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("commandUsage")));
         } else {
-            if (sender.hasPermission("silkspawners.reload")) {
+            if (sender.hasPermission("silkspawners.reload") || sender instanceof ConsoleCommandSender) {
                 plugin.reload();
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("reloadSuccess")));
             } else {

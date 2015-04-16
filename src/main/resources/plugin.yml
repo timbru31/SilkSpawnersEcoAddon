@@ -6,15 +6,12 @@ url: http://dev.bukkit.org/server-mods/silkspawnersecoaddon/
 description: Use Vault as an economy based hook to charge changing of spawners
 commands:
     silkspawnerseco:
-        aliases: [silkspawnersecoaddon]
+        aliases: [silkspawnersecoaddon, silkspawnerecoaddon, silkspawnereco]
         description: Reloads config file of SilkSpawnersEcoAddon
         usage: /<command> reload
 permissions:
     silkspawners.free:
         description: Allows you to bypass the economy check
-        default: op
-    silkspawners.reload:
-        description: Grants access to the reload command
         default: op
 depend: [SilkSpawners]
 softdepend: [Vault]

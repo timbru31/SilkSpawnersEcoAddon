@@ -119,9 +119,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
         config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
         config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
-        config.addDefault("noPermission", "&e[SilkSpawnersEco] &2You do not have the permission to perfom this operation!");
-        config.addDefault("commandUsage", "&e[SilkSpawnersEco] &2Command usage: /silkspawnerseco reload");
-        config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &4SilkSpawnersEcoAddon config file successfully reloaded.");
+        config.addDefault("noPermission", "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!");
+        config.addDefault("commandUsage", "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload");
+        config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
         config.addDefault("chargeMultipleAmounts", false);
@@ -143,8 +143,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     public void reload() {
         disable();
         this.reloadConfig();
+        config = getConfig();
         setDefaultPrice(config.getDouble("default"));
-        setChargeXP(config.getBoolean("chargeXP"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
         registerTask();
     }
@@ -200,7 +200,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
      */
     private void registerTask() {
         // Task if needed
-        if (confirmation()) {
+        if (isConfirmation()) {
             getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
                 @Override
                 public void run() {
@@ -234,7 +234,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
      *
      * @return the result
      */
-    public boolean chargeXP() {
+    public boolean isChargeXP() {
         return chargeXP;
     }
 
@@ -288,7 +288,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
      *
      * @return the result
      */
-    public boolean confirmation() {
+    public boolean isConfirmation() {
         return confirmation;
     }
 
