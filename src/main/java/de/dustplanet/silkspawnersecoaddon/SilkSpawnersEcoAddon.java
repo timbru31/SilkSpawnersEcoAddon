@@ -140,8 +140,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     /**
      * Reloads the configuration from the file
      */
-    @Override
-    public void reloadConfig() {
+    public void reload() {
         disable();
         this.reloadConfig();
         setDefaultPrice(config.getDouble("default"));

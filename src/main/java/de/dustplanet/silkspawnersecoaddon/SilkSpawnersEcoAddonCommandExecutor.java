@@ -26,7 +26,7 @@ public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("commandUsage")));
         } else {
             if (sender.hasPermission("silkspawners.reload")) {
-                plugin.reloadConfig();
+                plugin.reload();
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("reloadSuccess")));
             } else {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("noPermission")));
