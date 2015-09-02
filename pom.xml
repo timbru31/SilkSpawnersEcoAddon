@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>de.dustplanet</groupId>
   <artifactId>SilkSpawnersEcoAddon</artifactId>
-  <version>1.0.5-SNAPSHOT</version>
+  <version>1.0.6-SNAPSHOT</version>
   <name>SilkSpawnersEcoAddon</name>
   <url>http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon/</url>
 
@@ -14,8 +14,8 @@
   <!-- Repositories -->
   <repositories>
     <repository>
-      <id>spigot-repo</id>
-      <url>http://repo.md-5.net/content/groups/public</url>
+      <id>spigotmc-repo</id>
+      <url>https://hub.spigotmc.org/nexus/content/groups/public/</url>
     </repository>
     <repository>
       <id>vault-repo</id>
@@ -29,10 +29,6 @@
       <id>SilkSpawners-Repo</id>
       <url>http://ci.dustplanet.de/plugin/repository/everything</url>
     </repository>
-    <repository>
-      <id>bukkit-repo</id>
-      <url>http://repo.bukkit.org/content/repositories/snapshots</url>
-    </repository>
   </repositories>
 
   <!-- Dependencies -->
@@ -40,12 +36,12 @@
     <dependency>
       <groupId>de.dustplanet</groupId>
       <artifactId>SilkSpawners</artifactId>
-      <version>3.6.3-SNAPSHOT</version>
+      <version>3.6.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.8.3-R0.1-SNAPSHOT</version>
+      <version>1.8.8-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mcstats.bukkit</groupId>
