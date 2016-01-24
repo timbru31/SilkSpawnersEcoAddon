@@ -47,6 +47,12 @@
       <groupId>org.mcstats.bukkit</groupId>
       <artifactId>metrics</artifactId>
       <version>R7</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>bukkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>net.milkbowl.vault</groupId>
