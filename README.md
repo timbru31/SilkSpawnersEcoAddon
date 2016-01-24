@@ -1,7 +1,9 @@
-# SilkSpawnersEcoAddon [![Build Status](http://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](http://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
+# SilkSpawnersEcoAddon
+[![Build Status](http://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](http://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
+[![Build Status](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon.svg?branch=master)](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon)
 
 ## Info
-This CraftBukkit plugin adds an optional economy feature (via Vault or XP) to charge the changing of spawners
+This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP) to charge the changing of spawners
 * Uses pure SilkSpawners API
 * Fallback and flexible configuration of each mob
 * Name and ID support
