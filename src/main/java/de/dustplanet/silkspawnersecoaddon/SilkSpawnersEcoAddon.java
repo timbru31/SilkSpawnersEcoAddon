@@ -54,6 +54,11 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
     /**
+     * The default value for tick per second.
+     */
+    private static final long TICKS_PER_SECOND = 20L;
+
+    /**
      * Disabled SilkSpawnersEcoAddon and cleans stuff.
      */
     @Override
@@ -138,7 +143,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     /**
-     * Reloads the configuration from the file
+     * Reloads the configuration from the file.
      */
     public void reload() {
         disable();
@@ -150,7 +155,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     /**
-     * Clears all important data
+     * Clears all important data.
      */
     private void disable() {
         getServer().getScheduler().cancelTasks(this);
@@ -196,7 +201,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     /**
-     * Registers task for confirmation list
+     * Registers task for confirmation list.
      */
     private void registerTask() {
         // Task if needed
@@ -207,7 +212,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
                     // Clear pending list
                     getPendingConfirmationList().clear();
                 }
-            }, getConfig().getInt("confirmation.delay") * 20L, getConfig().getInt("confirmation.delay") * 20L);
+            }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
         }
     }
 

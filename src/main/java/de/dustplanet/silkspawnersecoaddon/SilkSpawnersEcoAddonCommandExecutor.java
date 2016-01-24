@@ -21,6 +21,16 @@ public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
         plugin = instance;
     }
 
+    /**
+     * The command executor for SilkSpawnersEcoAddon.
+     * Reloads the config.
+     *
+     * @param sender the CommandSender
+     * @param command the Command that was issued
+     * @param label the CommandLabel that was used
+     * @param args the arguments of the command
+     * @return whether the command was successful
+     */
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1 || !args[0].equalsIgnoreCase("reload")) {
