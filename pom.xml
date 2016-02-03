@@ -69,12 +69,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-release-plugin</artifactId>
-        <version>2.5.1</version>
+        <version>2.5.3</version>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
+        <version>3.5</version>
         <configuration>
           <verbose>true</verbose>
           <source>1.7</source>
@@ -86,7 +86,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.4.3</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -139,10 +139,10 @@
 
   <!-- Github information -->
   <scm>
-    <url>https://github.com/xGhOsTkiLLeRx/SilkSpawnersEcoAddon</url>
-    <connection>scm:git:git://github.com/xGhOsTkiLLeRx/SilkSpawnersEcoAddon.git</connection>
+    <url>https://github.com/timbru31/SilkSpawnersEcoAddon</url>
+    <connection>scm:git:git://github.com/timbru31/SilkSpawnersEcoAddon.git</connection>
     <tag>master</tag>
-    <developerConnection>scm:git:git@github.com:xGhOsTkiLLeRx/SilkSpawnersEcoAddon.git</developerConnection>
+    <developerConnection>scm:git:git@github.com:timbru31/SilkSpawnersEcoAddon.git</developerConnection>
   </scm>
 
   <!-- Jenkins information -->
