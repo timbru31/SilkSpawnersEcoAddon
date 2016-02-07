@@ -1,6 +1,7 @@
 # SilkSpawnersEcoAddon
-[![Build Status](http://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](http://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
+[![Build Status](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
 [![Build Status](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon.svg?branch=master)](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon)
+[![Circle CI](https://img.shields.io/circleci/project/timbru31/SilkSpawnersEcoAddon.svg)](https://circleci.com/gh/timbru31/SilkSpawnersEcoAddon)
 
 ## Info
 This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP) to charge the changing of spawners
