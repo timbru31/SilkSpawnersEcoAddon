@@ -2,6 +2,7 @@
 [![Build Status](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
 [![Build Status](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon.svg?branch=master)](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon)
 [![Circle CI](https://img.shields.io/circleci/project/timbru31/SilkSpawnersEcoAddon.svg)](https://circleci.com/gh/timbru31/SilkSpawnersEcoAddon)
+[![Build status](https://ci.appveyor.com/api/projects/status/8c1a9y2tdl8xwhhn?svg=true)](https://ci.appveyor.com/project/timbru31/silkspawnersecoaddon)
 
 ## Info
 This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP) to charge the changing of spawners
@@ -20,7 +21,7 @@ This plugin is released under the
 Please see [LICENSE.md](LICENSE.md) for more information.
 
 ## Standard config
-````yaml
+```yaml
 # You can configure every entityID/name (without spaces) or a default!
 cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
@@ -38,7 +39,7 @@ confirmation:
 default: 10.5
 pig: 7.25
 cow: 0.00
-````
+```
 
 ## Commands
 /silkspawnerseco reload - Reloads the config file (default: OP)
