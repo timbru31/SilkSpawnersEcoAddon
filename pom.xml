@@ -38,6 +38,12 @@
       <groupId>de.dustplanet</groupId>
       <artifactId>SilkSpawners</artifactId>
       <version>3.7-SNAPSHOT</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.bukkit</groupId>
+          <artifactId>craftbukkit</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.bukkit</groupId>
