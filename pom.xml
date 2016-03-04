@@ -8,6 +8,7 @@
 
   <!-- Encode in UTF-8 -->
   <properties>
+    <build.number>-b${BUILD_NUMBER}</build.number>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -36,17 +37,17 @@
     <dependency>
       <groupId>de.dustplanet</groupId>
       <artifactId>SilkSpawners</artifactId>
-      <version>3.6.7-SNAPSHOT</version>
+      <version>3.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.8.8-R0.1-SNAPSHOT</version>
+      <version>1.9-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mcstats.bukkit</groupId>
       <artifactId>metrics</artifactId>
-      <version>R7</version>
+      <version>R8-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>org.bukkit</groupId>
@@ -111,6 +112,11 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>2.5.3</version>
+      </plugin>
     </plugins>
 
     <!-- Include .yml files -->
@@ -147,7 +153,7 @@
 
   <!-- Jenkins information -->
   <ciManagement>
-    <url>http://ci.dustplanet.de/job/SilkSpawnersEcoAddon</url>
+    <url>https://ci.dustplanet.de/job/SilkSpawnersEcoAddon</url>
     <system>jenkins</system>
   </ciManagement>
   <description>Optional addon for SilkSpawners to charge (via Vault or XP) for changing monster spawners</description>
