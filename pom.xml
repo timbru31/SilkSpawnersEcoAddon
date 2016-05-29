@@ -40,8 +40,8 @@
       <version>3.7.2-SNAPSHOT</version>
       <exclusions>
         <exclusion>
-          <groupId>org.bukkit</groupId>
-          <artifactId>craftbukkit</artifactId>
+          <groupId>*</groupId>
+          <artifactId>*</artifactId>
         </exclusion>
       </exclusions>
     </dependency>
