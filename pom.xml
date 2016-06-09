@@ -37,7 +37,7 @@
     <dependency>
       <groupId>de.dustplanet</groupId>
       <artifactId>SilkSpawners</artifactId>
-      <version>3.7.2-SNAPSHOT</version>
+      <version>3.8-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
@@ -48,7 +48,7 @@
     <dependency>
       <groupId>org.bukkit</groupId>
       <artifactId>bukkit</artifactId>
-      <version>1.9.4-R0.1-SNAPSHOT</version>
+      <version>1.10-R0.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.mcstats.bukkit</groupId>
