@@ -65,6 +65,15 @@ public class SilkSpawnersEcoAddonListener implements Listener {
             price = plugin.getConfig().getDouble(Short.toString(entityID));
         }
 
+        // If price is 0 or player has free perm, stop here!
+        if (price <= 0 || player.hasPermission("silkspawners.free")) {
+            return;
+        }
+        // Charge for the amount (multiply)
+        if (plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
+            price *= event.getAmount();
+        }
+
         // Hook into the pending confirmation list
         if (plugin.isConfirmation()) {
             UUID playerName = player.getUniqueId();
@@ -79,14 +88,6 @@ public class SilkSpawnersEcoAddonListener implements Listener {
             plugin.getPendingConfirmationList().remove(playerName);
         }
 
-        // If price is 0 or player has free perm, stop here!
-        if (price <= 0 || player.hasPermission("silkspawners.free")) {
-            return;
-        }
-        // Charge for the amount (multiply)
-        if (plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
-            price *= event.getAmount();
-        }
         // If he has the money, charge it
         if (plugin.isChargeXP()) {
             int totalXP = player.getTotalExperience();
