@@ -1,4 +1,4 @@
-package de.dustplanet.silkspawnersecoaddon;
+package de.dustplanet.silkspawnersecoaddon.listeners;
 
 import java.util.UUID;
 
@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
+import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 import de.dustplanet.util.SilkUtil;
 
 /**
@@ -16,7 +17,7 @@ import de.dustplanet.util.SilkUtil;
  * @author xGhOsTkiLLeRx
  */
 
-public class SilkSpawnersEcoAddonListener implements Listener {
+public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
     /**
      * SilkSpawnersEcoAddon instance.
      */
@@ -32,7 +33,7 @@ public class SilkSpawnersEcoAddonListener implements Listener {
      *
      * @param instance of SilkSpawnersEcoAddon
      */
-    public SilkSpawnersEcoAddonListener(SilkSpawnersEcoAddon instance) {
+    public SilkSpawnersEcoSpawnerChangeListener(SilkSpawnersEcoAddon instance) {
         plugin = instance;
         su = SilkUtil.hookIntoSilkSpanwers();
     }

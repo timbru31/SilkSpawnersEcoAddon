@@ -1,10 +1,12 @@
-package de.dustplanet.silkspawnersecoaddon;
+package de.dustplanet.silkspawnersecoaddon.commands;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
+
+import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 
 /**
  * The command executor for SilkSpawnersEcoAddon.

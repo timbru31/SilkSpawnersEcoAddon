@@ -17,6 +17,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 // Metrics
 import org.mcstats.Metrics;
 
+import de.dustplanet.silkspawnersecoaddon.commands.SilkSpawnersEcoAddonCommandExecutor;
+import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoSpawnerChangeListener;
+
 /**
  * General stuff (config).
  *
@@ -100,7 +103,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         }
 
         // Listeners
-        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonListener(this), this);
+        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoSpawnerChangeListener(this), this);
 
         // Metrics
         try {
