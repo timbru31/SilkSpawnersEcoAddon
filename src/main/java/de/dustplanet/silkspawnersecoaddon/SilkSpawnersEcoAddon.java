@@ -8,9 +8,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
-//Vault
-import net.milkbowl.vault.economy.Economy;
-
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +16,10 @@ import org.mcstats.Metrics;
 
 import de.dustplanet.silkspawnersecoaddon.commands.SilkSpawnersEcoAddonCommandExecutor;
 import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoSpawnerChangeListener;
+import lombok.Getter;
+import lombok.Setter;
+//Vault
+import net.milkbowl.vault.economy.Economy;
 
 /**
  * General stuff (config).
@@ -27,6 +28,10 @@ import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoSpawnerChange
  */
 
 public class SilkSpawnersEcoAddon extends JavaPlugin {
+    /**
+     * The default value for tick per second.
+     */
+    private static final long TICKS_PER_SECOND = 20L;
     /**
      * Config of SilkSpawnersEcoAddon.
      */
@@ -38,28 +43,89 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     /**
      * Economy provider with Vault.
      */
+    @Getter
+    @Setter
     private Economy econ;
     /**
      * Default price for charging.
      */
+    @Getter
+    @Setter
     private double defaultPrice = 10.5;
     /**
      * Status if XP charging is on or off.
      */
+    @Getter
+    @Setter
     private boolean chargeXP;
     /**
      * Status of the confirmation feature.
      */
+    @Getter
+    @Setter
     private boolean confirmation;
+
     /**
      * List of pending player who need to confirm the change.
      */
+    @Getter
+    @Setter
     private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
+    // If no config is found, copy the default one(s)!
     /**
-     * The default value for tick per second.
+     * Copies default config file.
+     *
+     * @param yml the yml file string
+     * @param file the actual file
      */
-    private static final long TICKS_PER_SECOND = 20L;
+    private void copy(String yml, File file) {
+        try (OutputStream out = new FileOutputStream(file); InputStream in = getResource(yml)) {
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = in.read(buf)) > 0) {
+                out.write(buf, 0, len);
+            }
+        } catch (IOException e) {
+            getLogger().warning("Failed to copy the default config! (I/O)");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Clears all important data.
+     */
+    private void disable() {
+        getServer().getScheduler().cancelTasks(this);
+        getPendingConfirmationList().clear();
+    }
+
+    /**
+     * Loads the default config and values.
+     */
+    private void loadConfig() {
+        config.options().header("You can configure every entityID/name (without spaces) or a default!");
+        config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
+        config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
+        config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
+        config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
+        config.addDefault("noPermission", "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!");
+        config.addDefault("commandUsage", "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload");
+        config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
+        config.addDefault("chargeSameMob", false);
+        config.addDefault("chargeXP", false);
+        config.addDefault("chargeMultipleAmounts", false);
+        config.addDefault("confirmation.enabled", false);
+        config.addDefault("confirmation.delay", 30);
+        config.addDefault("default", 10.5);
+        config.addDefault("pig", 7.25);
+        config.addDefault("cow", 0.00);
+        config.options().copyDefaults(true);
+        saveConfig();
+        setDefaultPrice(config.getDouble("default"));
+        setChargeXP(config.getBoolean("chargeXP"));
+        setConfirmation(config.getBoolean("confirmation.enabled"));
+    }
 
     /**
      * Disabled SilkSpawnersEcoAddon and cleans stuff.
@@ -119,30 +185,19 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     /**
-     * Loads the default config and values.
+     * Registers task for confirmation list.
      */
-    private void loadConfig() {
-        config.options().header("You can configure every entityID/name (without spaces) or a default!");
-        config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
-        config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
-        config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
-        config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
-        config.addDefault("noPermission", "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!");
-        config.addDefault("commandUsage", "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload");
-        config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
-        config.addDefault("chargeSameMob", false);
-        config.addDefault("chargeXP", false);
-        config.addDefault("chargeMultipleAmounts", false);
-        config.addDefault("confirmation.enabled", false);
-        config.addDefault("confirmation.delay", 30);
-        config.addDefault("default", 10.5);
-        config.addDefault("pig", 7.25);
-        config.addDefault("cow", 0.00);
-        config.options().copyDefaults(true);
-        saveConfig();
-        setDefaultPrice(config.getDouble("default"));
-        setChargeXP(config.getBoolean("chargeXP"));
-        setConfirmation(config.getBoolean("confirmation.enabled"));
+    private void registerTask() {
+        // Task if needed
+        if (isConfirmation()) {
+            getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
+                @Override
+                public void run() {
+                    // Clear pending list
+                    getPendingConfirmationList().clear();
+                }
+            }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
+        }
     }
 
     /**
@@ -155,14 +210,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setDefaultPrice(config.getDouble("default"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
         registerTask();
-    }
-
-    /**
-     * Clears all important data.
-     */
-    private void disable() {
-        getServer().getScheduler().cancelTasks(this);
-        getPendingConfirmationList().clear();
     }
 
     // Initialized to work with Vault
@@ -181,131 +228,5 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         }
         setEcon(rsp.getProvider());
         return getEcon() != null;
-    }
-
-    // If no config is found, copy the default one(s)!
-    /**
-     * Copies default config file.
-     *
-     * @param yml the yml file string
-     * @param file the actual file
-     */
-    private void copy(String yml, File file) {
-        try (OutputStream out = new FileOutputStream(file); InputStream in = getResource(yml)) {
-            byte[] buf = new byte[1024];
-            int len;
-            while ((len = in.read(buf)) > 0) {
-                out.write(buf, 0, len);
-            }
-        } catch (IOException e) {
-            getLogger().warning("Failed to copy the default config! (I/O)");
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Registers task for confirmation list.
-     */
-    private void registerTask() {
-        // Task if needed
-        if (isConfirmation()) {
-            getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
-                @Override
-                public void run() {
-                    // Clear pending list
-                    getPendingConfirmationList().clear();
-                }
-            }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
-        }
-    }
-
-    /**
-     * Gets the default price used for charging.
-     *
-     * @return the default price
-     */
-    public double getDefaultPrice() {
-        return defaultPrice;
-    }
-
-    /**
-     * Sets the default price used for charging.
-     *
-     * @param defaultPrice the default price
-     */
-    public void setDefaultPrice(double defaultPrice) {
-        this.defaultPrice = defaultPrice;
-    }
-
-    /**
-     * Gets current state if XP charging is on.
-     *
-     * @return the result
-     */
-    public boolean isChargeXP() {
-        return chargeXP;
-    }
-
-    /**
-     * Sets XP charging on or off.
-     *
-     * @param chargeXP the new state
-     */
-    public void setChargeXP(boolean chargeXP) {
-        this.chargeXP = chargeXP;
-    }
-
-    /**
-     * Returns Vault economy instance.
-     *
-     * @return economy or if not found null
-     */
-    public Economy getEcon() {
-        return econ;
-    }
-
-    /**
-     * Sets the Vault economy.
-     *
-     * @param econ the Vault econ
-     */
-    public void setEcon(Economy econ) {
-        this.econ = econ;
-    }
-
-    /**
-     * Gets the list of people who need to confirm the change.
-     *
-     * @return the list of players
-     */
-    public ArrayList<UUID> getPendingConfirmationList() {
-        return pendingConfirmationList;
-    }
-
-    /**
-     * Sets the pending list of players.
-     *
-     * @param pendingConfirmationList the new player pending list
-     */
-    public void setPendingConfirmationList(ArrayList<UUID> pendingConfirmationList) {
-        this.pendingConfirmationList = pendingConfirmationList;
-    }
-
-    /**
-     * Returns if the confirmation feature is used.
-     *
-     * @return the result
-     */
-    public boolean isConfirmation() {
-        return confirmation;
-    }
-
-    /**
-     * Sets if configuration feature should be used.
-     *
-     * @param confirmation true or false
-     */
-    public void setConfirmation(boolean confirmation) {
-        this.confirmation = confirmation;
     }
 }
