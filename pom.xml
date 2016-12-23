@@ -29,7 +29,7 @@
     </repository>
     <repository>
       <id>SilkSpawners-Repo</id>
-      <url>https://ci.dustplanet.de/plugin/repository/everything</url>
+      <url>http://ci.dustplanet.de/plugin/repository/everything</url>
     </repository>
   </repositories>
 
