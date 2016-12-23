@@ -220,10 +220,12 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
      */
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
+            getLogger().severe("Vault seems to be missing. Make sure to install the latest version of Vault!");
             return false;
         }
         RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
-        if (rsp == null) {
+        if (rsp == null || rsp.getProvider() == null) {
+            getLogger().severe("There is no economy provider installed for Vault! Make sure to install an economy plugin!");
             return false;
         }
         setEcon(rsp.getProvider());
