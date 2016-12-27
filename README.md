@@ -55,7 +55,7 @@ cow: 0.00
 | silkspawners.reload | Allows access to the reload command |
 
 ## Support
-For support visit the dev.bukkit.org page: http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon
+For support please open an issue here on [GitHub](https://github.com/timbru31/SilkSpawnersEcoAddon/issues/new).
 
 ## Pull Requests
 Feel free to submit any PRs here. :)
