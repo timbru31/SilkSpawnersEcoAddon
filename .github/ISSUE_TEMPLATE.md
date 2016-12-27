@@ -18,11 +18,11 @@
 
 ## Please provide any additional information below.
 
-### Misc
+## Acknowledgments
 
-[ ] I am aware that issues caused by /reload are ignored
-[ ] If there is a (potential) plugin conflict, I've identified the conflicting plugin
-[ ] I have added a valid /version output
-[ ] I have added a valid SilkSpawners version
-[ ] I have added a valid SilkSpawnersEcoAddon version
-[ ] I have attached neccessary information like a screenshot, my list of plugins, config or permissions file(s)
+- [ ] I am aware that issues caused by /reload are ignored
+- [ ] If there is a (potential) plugin conflict, I've identified the conflicting plugin
+- [ ] I have added a valid /version output
+- [ ] I have added a valid SilkSpawners version
+- [ ] I have added a valid SilkSpawnersEcoAddon version
+- [ ] I have attached necessary information like a screenshot, my list of plugins, config or permissions file(s)
