@@ -18,7 +18,7 @@
 
 ## Please provide any additional information below.
 
-## Acknowledgments
+## Checklist
 
 - [ ] I am aware that issues caused by /reload are ignored
 - [ ] If there is a (potential) plugin conflict, I've identified the conflicting plugin
