@@ -8,17 +8,16 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import org.bstats.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-// Metrics
-import org.mcstats.Metrics;
 
 import de.dustplanet.silkspawnersecoaddon.commands.SilkSpawnersEcoAddonCommandExecutor;
 import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoSpawnerChangeListener;
 import lombok.Getter;
 import lombok.Setter;
-//Vault
+
 import net.milkbowl.vault.economy.Economy;
 
 /**
@@ -28,51 +27,26 @@ import net.milkbowl.vault.economy.Economy;
  */
 
 public class SilkSpawnersEcoAddon extends JavaPlugin {
-    /**
-     * The default value for tick per second.
-     */
+
     private static final long TICKS_PER_SECOND = 20L;
-    /**
-     * Config of SilkSpawnersEcoAddon.
-     */
     private FileConfiguration config;
-    /**
-     * Real file of the config.
-     */
     private File configFile;
-    /**
-     * Economy provider with Vault.
-     */
     @Getter
     @Setter
     private Economy econ;
-    /**
-     * Default price for charging.
-     */
     @Getter
     @Setter
     private double defaultPrice = 10.5;
-    /**
-     * Status if XP charging is on or off.
-     */
     @Getter
     @Setter
     private boolean chargeXP;
-    /**
-     * Status of the confirmation feature.
-     */
     @Getter
     @Setter
     private boolean confirmation;
-
-    /**
-     * List of pending player who need to confirm the change.
-     */
     @Getter
     @Setter
     private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
-    // If no config is found, copy the default one(s)!
     /**
      * Copies default config file.
      *
@@ -92,17 +66,11 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         }
     }
 
-    /**
-     * Clears all important data.
-     */
     private void disable() {
         getServer().getScheduler().cancelTasks(this);
         getPendingConfirmationList().clear();
     }
 
-    /**
-     * Loads the default config and values.
-     */
     private void loadConfig() {
         config.options().header("You can configure every entityID/name (without spaces) or a default!");
         config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
@@ -127,17 +95,11 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
-    /**
-     * Disabled SilkSpawnersEcoAddon and cleans stuff.
-     */
     @Override
     public void onDisable() {
         disable();
     }
 
-    /**
-     * Loads SilkSpawnersEcodAddon.
-     */
     @Override
     public void onEnable() {
         // Config
@@ -156,53 +118,33 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config = getConfig();
         loadConfig();
 
-        // CommandExecutor
         getCommand("silkspawnerseco").setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
 
         if (setupEconomy()) {
-            // If Vault is enabled, load the economy
             getLogger().info("Loaded Vault successfully");
         } else {
-            // Else tell the admin about the missing of Vault
             getLogger().severe("Vault was not found! XP charging is now ON...");
             setChargeXP(true);
         }
 
-        // Listeners
         getServer().getPluginManager().registerEvents(new SilkSpawnersEcoSpawnerChangeListener(this), this);
 
-        // Metrics
-        try {
-            Metrics metrics = new Metrics(this);
-            metrics.start();
-        } catch (IOException e) {
-            getLogger().info("Couldn't start Metrics, please report this!");
-            e.printStackTrace();
-        }
+        new Metrics(this);
 
-        // Register task
         registerTask();
     }
 
-    /**
-     * Registers task for confirmation list.
-     */
     private void registerTask() {
-        // Task if needed
         if (isConfirmation()) {
             getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
                 @Override
                 public void run() {
-                    // Clear pending list
                     getPendingConfirmationList().clear();
                 }
             }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
         }
     }
 
-    /**
-     * Reloads the configuration from the file.
-     */
     public void reload() {
         disable();
         this.reloadConfig();
@@ -212,12 +154,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         registerTask();
     }
 
-    // Initialized to work with Vault
-    /**
-     * Hook into Vault.
-     *
-     * @return whether the hook into Vault was successful
-     */
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().severe("Vault seems to be missing. Make sure to install the latest version of Vault!");

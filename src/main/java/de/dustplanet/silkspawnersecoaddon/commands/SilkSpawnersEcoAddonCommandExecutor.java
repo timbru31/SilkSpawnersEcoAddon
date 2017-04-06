@@ -16,16 +16,8 @@ import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 */
 
 public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
-    /**
-     * SilkSpawnersEcoAddon instance.
-     */
     private SilkSpawnersEcoAddon plugin;
 
-    /**
-     * Creates a new SilkSpawnersEcoAddonCommandExecutor.
-     *
-     * @param instance of SilkSpawnersEcoAddon
-     */
     public SilkSpawnersEcoAddonCommandExecutor(SilkSpawnersEcoAddon instance) {
         plugin = instance;
     }
