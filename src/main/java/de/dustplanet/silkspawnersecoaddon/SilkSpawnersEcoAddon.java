@@ -92,9 +92,12 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("chargeMultipleAmounts", false);
         config.addDefault("confirmation.enabled", false);
         config.addDefault("confirmation.delay", 30);
-        config.addDefault("default", 10.5);
-        config.addDefault("pig", 7.25);
-        config.addDefault("cow", 0.00);
+        config.addDefault("default.money", 10.5);
+        config.addDefault("default.exp", 100);
+        config.addDefault("pig.money", 7.25);
+        config.addDefault("pig.exp", 200);
+        config.addDefault("cow.money", 0.00);
+        config.addDefault("cow.exp", 20);
         config.options().copyDefaults(true);
         saveConfig();
         setDefaultPrice(config.getDouble("default"));
