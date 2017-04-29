@@ -64,8 +64,9 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
             plugin.getPendingConfirmationList().remove(playerName);
         }
 
+        int totalXP = player.getTotalExperience();
+        
         if (plugin.isChargeXP()) {
-            int totalXP = player.getTotalExperience();
             if (totalXP >= price) {
                 totalXP -= price;
                 player.setTotalExperience(0);
@@ -73,7 +74,25 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
                 player.giveExp(totalXP);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
             } else {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAfford")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAffordXP")));
+                event.setCancelled(true);
+            }
+        } else if (plugin.isChargeBoth()) {
+            Boolean canAffordXP = totalXP >= price;
+            Boolean canAffordMoney = plugin.getEcon().has(player, price);
+            if (canAffordXP && canAffordMoney) {
+                plugin.getEcon().withdrawPlayer(player, price);
+                
+                totalXP -= price;
+                player.setTotalExperience(0);
+                player.setLevel(0);
+                player.giveExp(totalXP);
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
+            } else {
+                if (!canAffordXP)
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAffordBothXP")));
+                else
+                    player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAffordBothMoney")));
                 event.setCancelled(true);
             }
         } else {
@@ -81,7 +100,7 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
                 plugin.getEcon().withdrawPlayer(player, price);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
             } else {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAfford")));
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAffordMoney")));
                 event.setCancelled(true);
             }
         }
