@@ -37,20 +37,24 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
         }
 
         String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
-        double price = plugin.getDefaultPrice();
+        double priceXP = plugin.getDefaultPrice();
+        double priceMoney = plugin.getDefaultPrice();
 
         if (plugin.getConfig().contains(name)) {
-            price = plugin.getConfig().getDouble(name);
+            priceXP = plugin.getConfig().getDouble(name + ".exp");
+            priceMoney = plugin.getConfig().getDouble(name + ".money");
         } else if (plugin.getConfig().contains(Short.toString(entityID))) {
-            price = plugin.getConfig().getDouble(Short.toString(entityID));
+            priceXP = plugin.getConfig().getDouble(Short.toString(entityID) + ".exp");
+            priceMoney = plugin.getConfig().getDouble(Short.toString(entityID) + ".money");
         }
 
-        if (price <= 0 || player.hasPermission("silkspawners.free")) {
+        if ((priceXP == 0 && priceMoney == 0) || player.hasPermission("silkspawners.free")) {
             return;
         }
 
         if (plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
-            price *= event.getAmount();
+            priceXP *= event.getAmount();
+            priceMoney *= event.getAmount();
         }
 
         if (plugin.isConfirmation()) {
@@ -67,8 +71,8 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
         int totalXP = player.getTotalExperience();
         
         if (plugin.isChargeXP()) {
-            if (totalXP >= price) {
-                totalXP -= price;
+            if (totalXP >= priceXP) {
+                totalXP -= priceXP;
                 player.setTotalExperience(0);
                 player.setLevel(0);
                 player.giveExp(totalXP);
@@ -78,12 +82,12 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
                 event.setCancelled(true);
             }
         } else if (plugin.isChargeBoth()) {
-            Boolean canAffordXP = totalXP >= price;
-            Boolean canAffordMoney = plugin.getEcon().has(player, price);
+            Boolean canAffordXP = totalXP >= priceXP;
+            Boolean canAffordMoney = plugin.getEcon().has(player, priceMoney);
             if (canAffordXP && canAffordMoney) {
-                plugin.getEcon().withdrawPlayer(player, price);
+                plugin.getEcon().withdrawPlayer(player, priceMoney);
                 
-                totalXP -= price;
+                totalXP -= priceXP;
                 player.setTotalExperience(0);
                 player.setLevel(0);
                 player.giveExp(totalXP);
@@ -96,8 +100,8 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
                 event.setCancelled(true);
             }
         } else {
-            if (plugin.getEcon().has(player, price)) {
-                plugin.getEcon().withdrawPlayer(player, price);
+            if (plugin.getEcon().has(player, priceMoney)) {
+                plugin.getEcon().withdrawPlayer(player, priceMoney);
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("afford")).replace("%money%", Double.toString(price)));
             } else {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("cantAffordMoney")));

@@ -15,6 +15,12 @@ chargeMultipleAmounts: false
 confirmation:
   enabled: false
   delay: 30
-default: 10.5
-pig: 7.25
-cow: 0.00
+default:
+  - money: 10.5
+  - exp: 100
+pig:
+  - money: 7.25
+  - exp: 200
+cow:
+  - money: 0.0
+  - exp: 20
