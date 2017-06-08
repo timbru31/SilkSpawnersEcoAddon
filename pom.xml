@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.dustplanet</groupId>
     <artifactId>bukkit-plugin</artifactId>
-    <version>1.2.4-SNAPSHOT</version>
+    <version>1.2.11-SNAPSHOT</version>
     <relativePath />
   </parent>
 
@@ -21,7 +21,6 @@
     <plugin.package>de.dustplanet.silkspawnersecoaddon</plugin.package>
     <jdk.version>1.8</jdk.version>
   </properties>
-
 
   <repositories>
     <repository>
