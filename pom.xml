@@ -4,7 +4,7 @@
   <parent>
     <groupId>de.dustplanet</groupId>
     <artifactId>bukkit-plugin</artifactId>
-    <version>3.5.1-SNAPSHOT</version>
+    <version>4.2.1</version>
     <relativePath />
   </parent>
 
@@ -19,7 +19,6 @@
     <plugin.name>SilkSpawnersEcoAddon</plugin.name>
     <plugin.main>de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon</plugin.main>
     <plugin.package>de.dustplanet.silkspawnersecoaddon</plugin.package>
-    <jdk.version>1.8</jdk.version>
   </properties>
 
   <repositories>
@@ -41,7 +40,7 @@
     <dependency>
       <groupId>de.dustplanet</groupId>
       <artifactId>SilkSpawners</artifactId>
-      <version>5.0.0-SNAPSHOT</version>
+      <version>5.0.1-SNAPSHOT</version>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
