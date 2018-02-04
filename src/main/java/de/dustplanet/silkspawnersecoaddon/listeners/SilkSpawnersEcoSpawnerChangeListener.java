@@ -48,7 +48,7 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
             priceMoney = plugin.getConfig().getDouble(Short.toString(entityID) + ".money");
         }
 
-        if ((priceXP == 0 && priceMoney == 0) || player.hasPermission("silkspawners.free")) {
+        if (priceXP == 0 && priceMoney == 0 || player.hasPermission("silkspawners.free")) {
             return;
         }
 
