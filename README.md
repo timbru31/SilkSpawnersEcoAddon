@@ -3,8 +3,10 @@
 [![Build Status](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon.svg?branch=master)](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon)
 [![Circle CI](https://img.shields.io/circleci/project/timbru31/SilkSpawnersEcoAddon.svg)](https://circleci.com/gh/timbru31/SilkSpawnersEcoAddon)
 [![Build status](https://ci.appveyor.com/api/projects/status/8c1a9y2tdl8xwhhn?svg=true)](https://ci.appveyor.com/project/timbru31/silkspawnersecoaddon)
+[![Known Vulnerabilities](https://snyk.io/test/github/timbru31/silkspawnersecoaddon/badge.svg)](https://snyk.io/test/github/timbru31/silkspawnersecoaddon)
 
 [![BukkitDev](https://img.shields.io/badge/BukkitDev-v1.0.6-orange.svg)](https://dev.bukkit.org/projects/silkspawnersecoaddon)
+[![SpigotMC](https://img.shields.io/badge/SpigotMC-v1.0.6-orange.svg)](https://www.spigotmc.org/resources/8089/)
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
