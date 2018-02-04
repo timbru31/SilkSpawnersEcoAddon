@@ -13,7 +13,7 @@
 [![Join the chat at https://gitter.im/timbru31/SilkSpawners](https://badges.gitter.im/timbru31/SilkSpawners.svg)](https://gitter.im/timbru31/SilkSpawners?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Info
-This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP) to charge the changing of spawners
+This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP or both) to charge the changing of spawners
 * Uses pure SilkSpawners API
 * Fallback and flexible configuration of each mob
 * Name and ID support
@@ -26,22 +26,22 @@ This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP
 ## Standard config
 ```yaml
 # You can configure every entityID/name (without spaces) or a default!
-cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
-afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
-sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
-confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!"
-noPermission: "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!"
-commandUsage: "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload"
-reloadSuccess: "&e[SilkSpawnersEco] &2Config file successfully reloaded."
 chargeSameMob: false
 chargeXP: false
+chargeBoth: false
 chargeMultipleAmounts: false
 confirmation:
   enabled: false
   delay: 30
-default: 10.5
-pig: 7.25
-cow: 0.00
+default:
+  money: 10.5
+  xp: 100
+pig:
+  money: 7.25
+  xp: 200
+cow:
+  money: 0.0
+  xp: 20
 ```
 
 ## Commands

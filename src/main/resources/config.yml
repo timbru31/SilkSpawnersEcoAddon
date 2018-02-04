@@ -1,26 +1,17 @@
 # You can configure every entityID/name (without spaces) or a default!
-cantAffordXP: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough EXP!"
-cantAffordMoney: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
-cantAffordBothXP:  "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough EXP! Nothing was charged."
-cantAffordBothMoney: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money! Nothing was charged."
-afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
-sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
-confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!"
-noPermission: "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!"
-commandUsage: "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload"
-reloadSuccess: "&e[SilkSpawnersEco] &2Config file successfully reloaded."
 chargeSameMob: false
 chargeXP: false
+chargeBoth: false
 chargeMultipleAmounts: false
 confirmation:
   enabled: false
   delay: 30
 default:
-  - money: 10.5
-  - exp: 100
+  money: 10.5
+  xp: 100
 pig:
-  - money: 7.25
-  - exp: 200
+  money: 7.25
+  xp: 200
 cow:
-  - money: 0.0
-  - exp: 20
+  money: 0.0
+  xp: 20
