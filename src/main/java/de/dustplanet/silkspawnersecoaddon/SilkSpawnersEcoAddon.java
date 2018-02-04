@@ -15,9 +15,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import de.dustplanet.silkspawnersecoaddon.commands.SilkSpawnersEcoAddonCommandExecutor;
 import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoSpawnerChangeListener;
+import de.dustplanet.silkspawnersecoaddon.util.ScalarYamlConfiguration;
 import lombok.Getter;
 import lombok.Setter;
-
 import net.milkbowl.vault.economy.Economy;
 
 /**
@@ -29,17 +29,25 @@ import net.milkbowl.vault.economy.Economy;
 public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     private static final long TICKS_PER_SECOND = 20L;
-    private FileConfiguration config;
-    private File configFile;
+    @Getter
+    @Setter
+    private FileConfiguration localization;
+    private File configFile, localizationFile;
     @Getter
     @Setter
     private Economy econ;
     @Getter
     @Setter
-    private double defaultPrice = 10.5;
+    private double defaultPriceMoney;
+    @Getter
+    @Setter
+    private double defaultPriceXP;
     @Getter
     @Setter
     private boolean chargeXP;
+    @Getter
+    @Setter
+    private boolean chargeBoth;
     @Getter
     @Setter
     private boolean confirmation;
@@ -47,12 +55,61 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     @Setter
     private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
 
-    /**
-     * Copies default config file.
-     *
-     * @param yml the yml file string
-     * @param file the actual file
-     */
+    @Override
+    public void onDisable() {
+        disable();
+    }
+
+    @Override
+    public void onEnable() {
+        configFile = new File(getDataFolder(), "config.yml");
+        if (!configFile.exists()) {
+            if (configFile.getParentFile().mkdirs()) {
+                copy("config.yml", configFile);
+            } else {
+                getLogger().severe("The config folder could NOT be created, make sure it's writable!");
+                getLogger().severe("Disabling now!");
+                setEnabled(false);
+                return;
+            }
+        }
+
+        loadConfig();
+
+        localizationFile = new File(getDataFolder(), "localization.yml");
+        if (!localizationFile.exists()) {
+            copy("localization.yml", localizationFile);
+        }
+
+        setLocalization(ScalarYamlConfiguration.loadConfiguration(localizationFile));
+        loadLocalization();
+
+        getCommand("silkspawnerseco").setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
+
+        if (setupEconomy()) {
+            getLogger().info("Loaded Vault successfully");
+        } else {
+            getLogger().severe("Vault was not found! XP charging is now ON...");
+            setChargeXP(true);
+        }
+
+        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoSpawnerChangeListener(this), this);
+
+        new Metrics(this);
+
+        registerTask();
+    }
+
+    public void reload() {
+        disable();
+        this.reloadConfig();
+        FileConfiguration config = getConfig();
+        setDefaultPriceMoney(config.getDouble("default.money"));
+        setDefaultPriceXP(config.getDouble("default.xp"));
+        setConfirmation(config.getBoolean("confirmation.enabled"));
+        registerTask();
+    }
+
     private void copy(String yml, File file) {
         try (OutputStream out = new FileOutputStream(file); InputStream in = getResource(yml)) {
             byte[] buf = new byte[1024];
@@ -72,66 +129,59 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     private void loadConfig() {
+        FileConfiguration config = getConfig();
         config.options().header("You can configure every entityID/name (without spaces) or a default!");
-        config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
-        config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
-        config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
-        config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
-        config.addDefault("noPermission", "&e[SilkSpawnersEco] &4You do not have the permission to perfom this operation!");
-        config.addDefault("commandUsage", "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload");
-        config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
+        config.addDefault("chargeBoth", false);
         config.addDefault("chargeMultipleAmounts", false);
         config.addDefault("confirmation.enabled", false);
         config.addDefault("confirmation.delay", 30);
-        config.addDefault("default", 10.5);
-        config.addDefault("pig", 7.25);
-        config.addDefault("cow", 0.00);
+        config.addDefault("default.money", 10.5);
+        config.addDefault("default.xp", 100);
+        config.addDefault("pig.money", 7.25);
+        config.addDefault("pig.xp", 200);
+        config.addDefault("cow.money", 0.00);
+        config.addDefault("cow.xp", 20);
         config.options().copyDefaults(true);
         saveConfig();
-        setDefaultPrice(config.getDouble("default"));
+
+        setDefaultPriceMoney(config.getDouble("default.money"));
+        setDefaultPriceXP(config.getDouble("default.xp"));
         setChargeXP(config.getBoolean("chargeXP"));
+        setChargeBoth(config.getBoolean("chargeBoth"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
-    @Override
-    public void onDisable() {
-        disable();
+    private void loadLocalization() {
+        localization.addDefault("cantAffordMoney",
+                "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
+        localization.addDefault("cantAffordXP",
+                "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough XP!");
+        localization.addDefault("affordBoth", "&e[SilkSpawnersEco] &2This action costs &e%money% &2and &e%xp% &2XP");
+        localization.addDefault("affordMoney", "&e[SilkSpawnersEco] &2This action costs &e%money%");
+        localization.addDefault("affordXP", "&e[SilkSpawnersEco] &2This action costs &e%xp%");
+        localization.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
+        localization.addDefault("confirmationPendingBoth",
+                "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e and &2%xp% &eXP, if you want to continue, do the action again!");
+        localization.addDefault("confirmationPendingMoney",
+                "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
+        localization.addDefault("confirmationPendingXP",
+                "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%xp%&e XP, if you want to continue, do the action again!");
+        localization.addDefault("noPermission", "&e[SilkSpawnersEco] &4You do not have the permission to perform this operation!");
+        localization.addDefault("commandUsage", "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload");
+        localization.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
+        localization.options().copyDefaults(true);
+        saveLocalization();
     }
 
-    @Override
-    public void onEnable() {
-        // Config
-        configFile = new File(getDataFolder(), "config.yml");
-        if (!configFile.exists()) {
-            if (configFile.getParentFile().mkdirs()) {
-                copy("config.yml", configFile);
-            } else {
-                getLogger().severe("The config folder could NOT be created, make sure it's writable!");
-                getLogger().severe("Disabling now!");
-                setEnabled(false);
-                return;
-            }
+    private void saveLocalization() {
+        try {
+            localization.save(localizationFile);
+        } catch (IOException e) {
+            getLogger().warning("Failed to save the localization! Please report this! (I/O)");
+            e.printStackTrace();
         }
-
-        config = getConfig();
-        loadConfig();
-
-        getCommand("silkspawnerseco").setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
-
-        if (setupEconomy()) {
-            getLogger().info("Loaded Vault successfully");
-        } else {
-            getLogger().severe("Vault was not found! XP charging is now ON...");
-            setChargeXP(true);
-        }
-
-        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoSpawnerChangeListener(this), this);
-
-        new Metrics(this);
-
-        registerTask();
     }
 
     private void registerTask() {
@@ -143,15 +193,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
                 }
             }, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND, getConfig().getInt("confirmation.delay") * TICKS_PER_SECOND);
         }
-    }
-
-    public void reload() {
-        disable();
-        this.reloadConfig();
-        config = getConfig();
-        setDefaultPrice(config.getDouble("default"));
-        setConfirmation(config.getBoolean("confirmation.enabled"));
-        registerTask();
     }
 
     private boolean setupEconomy() {

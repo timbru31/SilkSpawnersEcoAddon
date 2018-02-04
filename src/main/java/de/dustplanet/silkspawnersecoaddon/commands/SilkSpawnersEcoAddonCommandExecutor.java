@@ -9,11 +9,10 @@ import org.bukkit.command.ConsoleCommandSender;
 import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 
 /**
- * The command executor for SilkSpawnersEcoAddon.
- * Reloads the config.
+ * The command executor for SilkSpawnersEcoAddon. Reloads the config.
  *
  * @author xGhOsTkiLLeRx
-*/
+ */
 
 public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
     private SilkSpawnersEcoAddon plugin;
@@ -25,13 +24,13 @@ public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1 || !args[0].equalsIgnoreCase("reload")) {
-            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("commandUsage")));
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("commandUsage")));
         } else {
             if (sender.hasPermission("silkspawners.reload") || sender instanceof ConsoleCommandSender) {
                 plugin.reload();
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("reloadSuccess")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("reloadSuccess")));
             } else {
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("noPermission")));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("noPermission")));
             }
         }
         return true;
