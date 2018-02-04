@@ -1,5 +1,8 @@
 # You can configure every entityID/name (without spaces) or a default!
-cantAfford: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
+cantAffordXP: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough EXP!"
+cantAffordMoney: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!"
+cantAffordBothXP:  "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough EXP! Nothing was charged."
+cantAffordBothMoney: "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money! Nothing was charged."
 afford: "&e[SilkSpawnersEco] &2This action costs &e%money%"
 sameMob: "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!"
 confirmationPending: "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!"
@@ -12,6 +15,12 @@ chargeMultipleAmounts: false
 confirmation:
   enabled: false
   delay: 30
-default: 10.5
-pig: 7.25
-cow: 0.00
+default:
+  - money: 10.5
+  - exp: 100
+pig:
+  - money: 7.25
+  - exp: 200
+cow:
+  - money: 0.0
+  - exp: 20

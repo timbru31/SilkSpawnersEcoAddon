@@ -42,6 +42,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private boolean chargeXP;
     @Getter
     @Setter
+    private boolean chargeBoth;
+    @Getter
+    @Setter
     private boolean confirmation;
     @Getter
     @Setter
@@ -73,7 +76,10 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     private void loadConfig() {
         config.options().header("You can configure every entityID/name (without spaces) or a default!");
-        config.addDefault("cantAfford", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
+        config.addDefault("cantAffordXP", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough EXP!");
+        config.addDefault("cantAffordMoney", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
+        config.addDefault("cantAffordBothXP", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough EXP! Nothing was charged.");
+        config.addDefault("cantAffordBothMoney", "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money! Nothing was charged.");
         config.addDefault("afford", "&e[SilkSpawnersEco] &2This action costs &e%money%");
         config.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
         config.addDefault("confirmationPending", "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
@@ -82,16 +88,21 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
+        config.addDefault("chargeBoth", false);
         config.addDefault("chargeMultipleAmounts", false);
         config.addDefault("confirmation.enabled", false);
         config.addDefault("confirmation.delay", 30);
-        config.addDefault("default", 10.5);
-        config.addDefault("pig", 7.25);
-        config.addDefault("cow", 0.00);
+        config.addDefault("default.money", 10.5);
+        config.addDefault("default.exp", 100);
+        config.addDefault("pig.money", 7.25);
+        config.addDefault("pig.exp", 200);
+        config.addDefault("cow.money", 0.00);
+        config.addDefault("cow.exp", 20);
         config.options().copyDefaults(true);
         saveConfig();
         setDefaultPrice(config.getDouble("default"));
         setChargeXP(config.getBoolean("chargeXP"));
+        setChargeBoth(config.getBoolean("chargeBoth"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
