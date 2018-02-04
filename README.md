@@ -13,11 +13,15 @@
 [![Join the chat at https://gitter.im/timbru31/SilkSpawners](https://badges.gitter.im/timbru31/SilkSpawners.svg)](https://gitter.im/timbru31/SilkSpawners?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Info
-This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP or both) to charge the changing of spawners
+This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP or both) to charge different cases
+* Charging for
+  * Breaking spawners
+  * Changing spawners
+  * Placing spawners
 * Uses pure SilkSpawners API
 * Fallback and flexible configuration of each mob
 * Name and ID support
-* No multiple charging of a mob
+* No multiple charging of a mob (when changing)
 * Second command/action as a confirmation needed (optional)
 
 *Third party features, all of them can be disabled*
@@ -34,14 +38,35 @@ confirmation:
   enabled: false
   delay: 30
 default:
-  money: 10.5
-  xp: 100
+  break:
+    money: 10.5
+    xp: 100
+  change:
+    money: 10.5
+    xp: 100
+  place:
+    money: 10.5
+    xp: 100
 pig:
-  money: 7.25
-  xp: 200
+  break:
+    money: 7.25
+    xp: 200
+  change:
+    money: 7.25
+    xp: 200
+  place:
+    money: 7.25
+    xp: 200
 cow:
-  money: 0.0
-  xp: 20
+  break:
+    money: 0.0
+    xp: 20
+  change:
+    money: 0.0
+    xp: 20
+  place:
+    money: 0.0
+    xp: 20
 ```
 
 ## Commands
@@ -59,7 +84,7 @@ cow:
 For support please open an issue here on [GitHub](https://github.com/timbru31/SilkSpawnersEcoAddon/issues/new).
 
 ## Pull Requests
-Feel free to submit any PRs here. :)
+Feel free to submit any PRs here. :)  
 Please follow the Sun Coding Guidelines, thanks!
 
 ## Usage statistics

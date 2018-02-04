@@ -7,11 +7,32 @@ confirmation:
   enabled: false
   delay: 30
 default:
-  money: 10.5
-  xp: 100
+  break:
+    money: 10.5
+    xp: 100
+  change:
+    money: 10.5
+    xp: 100
+  place:
+    money: 10.5
+    xp: 100
 pig:
-  money: 7.25
-  xp: 200
+  break:
+    money: 7.25
+    xp: 200
+  change:
+    money: 7.25
+    xp: 200
+  place:
+    money: 7.25
+    xp: 200
 cow:
-  money: 0.0
-  xp: 20
+  break:
+    money: 0.0
+    xp: 20
+  change:
+    money: 0.0
+    xp: 20
+  place:
+    money: 0.0
+    xp: 20

@@ -1,60 +1,74 @@
-package de.dustplanet.silkspawnersecoaddon.listeners;
+package de.dustplanet.silkspawnersecoaddon.util;
 
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.Event;
 
+import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerBreakEvent;
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
+import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerPlaceEvent;
 import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 import de.dustplanet.util.SilkUtil;
 
-/**
- * This is the listener of the custom event to charge the user.
- *
- * @author xGhOsTkiLLeRx
- */
-
-public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
+public class SilkSpawnersEcoAddonUtil {
     private SilkSpawnersEcoAddon plugin;
     private SilkUtil su;
 
-    public SilkSpawnersEcoSpawnerChangeListener(SilkSpawnersEcoAddon instance) {
+    public SilkSpawnersEcoAddonUtil(SilkSpawnersEcoAddon instance, SilkUtil silkUtil) {
         plugin = instance;
-        su = SilkUtil.hookIntoSilkSpanwers();
+        su = silkUtil;
     }
 
-    @EventHandler
-    public void onSpawnerChange(SilkSpawnersSpawnerChangeEvent event) {
-        Player player = event.getPlayer();
-        short entityID = event.getEntityID();
-        short spawnerID = event.getOldEntityID();
-        if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob")));
-            return;
+    public boolean handleGenericEvent(Event event) {
+        boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
+        boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
+        boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
+        Player player = null;
+        short entityID = 0;
+        String mode = null;
+        if (isChangeEvent) {
+            player = ((SilkSpawnersSpawnerChangeEvent) event).getPlayer();
+            entityID = ((SilkSpawnersSpawnerChangeEvent) event).getEntityID();
+            mode = ".change";
+        } else if (isBreakEvent) {
+            player = ((SilkSpawnersSpawnerBreakEvent) event).getPlayer();
+            entityID = ((SilkSpawnersSpawnerBreakEvent) event).getEntityID();
+            mode = ".break";
+        } else if (isPlaceEvent) {
+            player = ((SilkSpawnersSpawnerPlaceEvent) event).getPlayer();
+            entityID = ((SilkSpawnersSpawnerPlaceEvent) event).getEntityID();
+            mode = ".place";
+        }
+
+        if (isChangeEvent) {
+            short spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
+            if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
+                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob")));
+                return false;
+            }
         }
 
         String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
-        double priceMoney = plugin.getDefaultPriceMoney();
-        double priceXP = plugin.getDefaultPriceXP();
+        double priceMoney = plugin.getConfig().getDouble("default" + mode + ".money");
+        double priceXP = plugin.getConfig().getDouble("default" + mode + ".xp");
 
         if (plugin.getConfig().contains(name)) {
-            priceXP = plugin.getConfig().getDouble(name + ".xp");
-            priceMoney = plugin.getConfig().getDouble(name + ".money");
+            priceXP = plugin.getConfig().getDouble(name + mode + ".xp");
+            priceMoney = plugin.getConfig().getDouble(name + mode + ".money");
         } else if (plugin.getConfig().contains(Short.toString(entityID))) {
-            priceXP = plugin.getConfig().getDouble(Short.toString(entityID) + ".xp");
-            priceMoney = plugin.getConfig().getDouble(Short.toString(entityID) + ".money");
+            priceXP = plugin.getConfig().getDouble(Short.toString(entityID) + mode + ".xp");
+            priceMoney = plugin.getConfig().getDouble(Short.toString(entityID) + mode + ".money");
         }
 
         if (priceXP == 0 && priceMoney == 0 || player.hasPermission("silkspawners.free")) {
-            return;
+            return false;
         }
 
-        if (plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
-            priceXP *= event.getAmount();
-            priceMoney *= event.getAmount();
+        if (isChangeEvent && plugin.getConfig().getBoolean("chargeMultipleAmounts", false)) {
+            priceXP *= ((SilkSpawnersSpawnerChangeEvent) event).getAmount();
+            priceMoney *= ((SilkSpawnersSpawnerChangeEvent) event).getAmount();
         }
 
         if (plugin.isConfirmation()) {
@@ -62,8 +76,7 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
             if (!plugin.getPendingConfirmationList().contains(playerName)) {
                 plugin.getPendingConfirmationList().add(playerName);
                 sendConfirmationMessage(player, priceXP, priceMoney);
-                event.setCancelled(true);
-                return;
+                return true;
             }
             plugin.getPendingConfirmationList().remove(playerName);
         }
@@ -71,15 +84,15 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
         int totalXP = player.getTotalExperience();
 
         if (plugin.isChargeBoth()) {
-            chargeBoth(event, player, priceXP, priceMoney, totalXP);
+            return chargeBoth(player, priceXP, priceMoney, totalXP);
         } else if (plugin.isChargeXP()) {
-            chargeXP(event, player, priceXP, totalXP);
+            return chargeXP(player, priceXP, totalXP);
         } else {
-            chargeMoney(event, player, priceMoney);
+            return chargeMoney(player, priceMoney);
         }
     }
 
-    private void sendConfirmationMessage(Player player, double priceXP, double priceMoney) {
+    public void sendConfirmationMessage(Player player, double priceXP, double priceMoney) {
         if (plugin.isChargeBoth()) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("confirmationPendingBoth"))
                     .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
@@ -92,18 +105,19 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
         }
     }
 
-    private void chargeMoney(SilkSpawnersSpawnerChangeEvent event, Player player, double priceMoney) {
+    public boolean chargeMoney(Player player, double priceMoney) {
         if (plugin.getEcon().has(player, priceMoney)) {
             plugin.getEcon().withdrawPlayer(player, priceMoney);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordMoney"))
                     .replace("%money%", Double.toString(priceMoney)));
+            return false;
         } else {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney")));
-            event.setCancelled(true);
+            return true;
         }
     }
 
-    private void chargeBoth(SilkSpawnersSpawnerChangeEvent event, Player player, double priceXP, double priceMoney, int totalXP) {
+    public boolean chargeBoth(Player player, double priceXP, double priceMoney, int totalXP) {
         boolean canAffordXP = totalXP >= priceXP;
         boolean canAffordMoney = plugin.getEcon().has(player, priceMoney);
         if (canAffordXP && canAffordMoney) {
@@ -114,18 +128,19 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
             player.setLevel(0);
             player.giveExp(totalXP);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordBoth"))
-                    .replace("%money%", Double.toString(priceMoney).replace("%xp%", Double.toString(priceXP))));
+                    .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
+            return false;
         } else {
             if (!canAffordXP) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP")));
             } else {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney")));
             }
-            event.setCancelled(true);
+            return true;
         }
     }
 
-    private void chargeXP(SilkSpawnersSpawnerChangeEvent event, Player player, double priceXP, int totalXP) {
+    public boolean chargeXP(Player player, double priceXP, int totalXP) {
         if (totalXP >= priceXP) {
             totalXP -= priceXP;
             player.setTotalExperience(0);
@@ -133,9 +148,10 @@ public class SilkSpawnersEcoSpawnerChangeListener implements Listener {
             player.giveExp(totalXP);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordXP")).replace("%xp%",
                     Double.toString(priceXP)));
+            return false;
         } else {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP")));
-            event.setCancelled(true);
+            return true;
         }
     }
 }

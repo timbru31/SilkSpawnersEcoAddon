@@ -14,8 +14,11 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import de.dustplanet.silkspawnersecoaddon.commands.SilkSpawnersEcoAddonCommandExecutor;
-import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoSpawnerChangeListener;
+import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoAddonSpawnerBreakListener;
+import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoAddonSpawnerChangeListener;
+import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoAddonSpawnerPlaceListener;
 import de.dustplanet.silkspawnersecoaddon.util.ScalarYamlConfiguration;
+import de.dustplanet.util.SilkUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
@@ -38,12 +41,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private Economy econ;
     @Getter
     @Setter
-    private double defaultPriceMoney;
-    @Getter
-    @Setter
-    private double defaultPriceXP;
-    @Getter
-    @Setter
     private boolean chargeXP;
     @Getter
     @Setter
@@ -54,6 +51,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     @Getter
     @Setter
     private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
+    @Getter
+    @Setter
+    private SilkUtil silkUtil;
 
     @Override
     public void onDisable() {
@@ -62,6 +62,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        setSilkUtil(SilkUtil.hookIntoSilkSpanwers());
+
         configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             if (configFile.getParentFile().mkdirs()) {
@@ -93,7 +95,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
             setChargeXP(true);
         }
 
-        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoSpawnerChangeListener(this), this);
+        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonSpawnerChangeListener(this), this);
+        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonSpawnerBreakListener(this), this);
+        getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonSpawnerPlaceListener(this), this);
 
         new Metrics(this);
 
@@ -104,8 +108,6 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         disable();
         this.reloadConfig();
         FileConfiguration config = getConfig();
-        setDefaultPriceMoney(config.getDouble("default.money"));
-        setDefaultPriceXP(config.getDouble("default.xp"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
         registerTask();
     }
@@ -137,17 +139,27 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("chargeMultipleAmounts", false);
         config.addDefault("confirmation.enabled", false);
         config.addDefault("confirmation.delay", 30);
-        config.addDefault("default.money", 10.5);
-        config.addDefault("default.xp", 100);
-        config.addDefault("pig.money", 7.25);
-        config.addDefault("pig.xp", 200);
-        config.addDefault("cow.money", 0.00);
-        config.addDefault("cow.xp", 20);
+        config.addDefault("default.money.break", 10.5);
+        config.addDefault("default.money.change", 10.5);
+        config.addDefault("default.money.place", 10.5);
+        config.addDefault("default.xp.break", 100);
+        config.addDefault("default.xp.change", 100);
+        config.addDefault("default.xp.place", 100);
+        config.addDefault("pig.money.break", 7.25);
+        config.addDefault("pig.money.change", 7.25);
+        config.addDefault("pig.money.place", 7.25);
+        config.addDefault("pig.xp.break", 200);
+        config.addDefault("pig.xp.change", 200);
+        config.addDefault("pig.xp.place", 200);
+        config.addDefault("cow.money.break", 0.00);
+        config.addDefault("cow.money.change", 0.00);
+        config.addDefault("cow.money.place", 0.00);
+        config.addDefault("cow.xp.break", 20);
+        config.addDefault("cow.xp.change", 20);
+        config.addDefault("cow.xp.place", 20);
         config.options().copyDefaults(true);
         saveConfig();
 
-        setDefaultPriceMoney(config.getDouble("default.money"));
-        setDefaultPriceXP(config.getDouble("default.xp"));
         setChargeXP(config.getBoolean("chargeXP"));
         setChargeBoth(config.getBoolean("chargeBoth"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
@@ -155,19 +167,19 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     private void loadLocalization() {
         localization.addDefault("cantAffordMoney",
-                "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough money!");
+                "&e[SilkSpawnersEco] &4Sorry, but you can't do this action, because you have not enough money!");
         localization.addDefault("cantAffordXP",
-                "&e[SilkSpawnersEco] &4Sorry, but you can't change the mob of this spawner, because you have not enough XP!");
+                "&e[SilkSpawnersEco] &4Sorry, but you can't do this action, because you have not enough XP!");
         localization.addDefault("affordBoth", "&e[SilkSpawnersEco] &2This action costs &e%money% &2and &e%xp% &2XP");
         localization.addDefault("affordMoney", "&e[SilkSpawnersEco] &2This action costs &e%money%");
         localization.addDefault("affordXP", "&e[SilkSpawnersEco] &2This action costs &e%xp%");
         localization.addDefault("sameMob", "&e[SilkSpawnersEco] &2This action was free, because it's the same mob!");
         localization.addDefault("confirmationPendingBoth",
-                "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e and &2%xp% &eXP, if you want to continue, do the action again!");
+                "&e[SilkSpawnersEco] Remember that this action costs &2%money%&e and &2%xp% &eXP, if you want to continue, do the action again!");
         localization.addDefault("confirmationPendingMoney",
-                "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%money%&e, if you want to continue, do the action again!");
+                "&e[SilkSpawnersEco] Remember that this action costs &2%money%&e, if you want to continue, do the action again!");
         localization.addDefault("confirmationPendingXP",
-                "&e[SilkSpawnersEco] Remember that changing the spawner costs &2%xp%&e XP, if you want to continue, do the action again!");
+                "&e[SilkSpawnersEco] Remember that this action costs &2%xp%&e XP, if you want to continue, do the action again!");
         localization.addDefault("noPermission", "&e[SilkSpawnersEco] &4You do not have the permission to perform this operation!");
         localization.addDefault("commandUsage", "&e[SilkSpawnersEco] &4Command usage: /silkspawnerseco reload");
         localization.addDefault("reloadSuccess", "&e[SilkSpawnersEco] &2Config file successfully reloaded.");
