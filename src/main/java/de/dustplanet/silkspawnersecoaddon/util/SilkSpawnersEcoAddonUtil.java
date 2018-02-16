@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 
+import de.dustplanet.silkspawners.events.ISilkSpawnersEvent;
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerBreakEvent;
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerPlaceEvent;
@@ -21,24 +21,18 @@ public class SilkSpawnersEcoAddonUtil {
         su = silkUtil;
     }
 
-    public boolean handleGenericEvent(Event event) {
+    public boolean handleGenericEvent(ISilkSpawnersEvent event) {
         boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
         boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
         boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
-        Player player = null;
-        short entityID = 0;
+        Player player = event.getPlayer();
+        short entityID = event.getEntityID();
         String mode = null;
         if (isChangeEvent) {
-            player = ((SilkSpawnersSpawnerChangeEvent) event).getPlayer();
-            entityID = ((SilkSpawnersSpawnerChangeEvent) event).getEntityID();
             mode = ".change";
         } else if (isBreakEvent) {
-            player = ((SilkSpawnersSpawnerBreakEvent) event).getPlayer();
-            entityID = ((SilkSpawnersSpawnerBreakEvent) event).getEntityID();
             mode = ".break";
         } else if (isPlaceEvent) {
-            player = ((SilkSpawnersSpawnerPlaceEvent) event).getPlayer();
-            entityID = ((SilkSpawnersSpawnerPlaceEvent) event).getEntityID();
             mode = ".place";
         }
 
