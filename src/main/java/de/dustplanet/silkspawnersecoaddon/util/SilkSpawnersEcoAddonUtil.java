@@ -105,10 +105,9 @@ public class SilkSpawnersEcoAddonUtil {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordMoney"))
                     .replace("%money%", Double.toString(priceMoney)));
             return false;
-        } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney")));
-            return true;
         }
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney")));
+        return true;
     }
 
     public boolean chargeBoth(Player player, double priceXP, double priceMoney, int totalXP) {
@@ -124,14 +123,13 @@ public class SilkSpawnersEcoAddonUtil {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordBoth"))
                     .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
             return false;
-        } else {
-            if (!canAffordXP) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP")));
-            } else {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney")));
-            }
-            return true;
         }
+        if (!canAffordXP) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP")));
+        } else {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney")));
+        }
+        return true;
     }
 
     public boolean chargeXP(Player player, double priceXP, int totalXP) {
@@ -143,9 +141,8 @@ public class SilkSpawnersEcoAddonUtil {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordXP")).replace("%xp%",
                     Double.toString(priceXP)));
             return false;
-        } else {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP")));
-            return true;
         }
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP")));
+        return true;
     }
 }

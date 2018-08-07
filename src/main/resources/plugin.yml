@@ -2,8 +2,9 @@ name: SilkSpawnersEcoAddon
 author: xGhOsTkiLLeRx
 main: de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon
 version: ${project.version}${build.number}
-url: http://dev.bukkit.org/server-mods/silkspawnersecoaddon/
+website: http://dev.bukkit.org/server-mods/silkspawnersecoaddon/
 description: Use Vault as an economy based hook to charge actions regarding spawner interaction
+api-version: 1.13
 commands:
     silkspawnerseco:
         aliases: [silkspawnersecoaddon, silkspawnerecoaddon, silkspawnereco]
