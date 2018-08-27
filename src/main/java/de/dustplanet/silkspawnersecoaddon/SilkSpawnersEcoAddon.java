@@ -132,7 +132,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     private void loadConfig() {
         FileConfiguration config = getConfig();
-        config.options().header("You can configure every entityID/name (without spaces) or a default!");
+        config.options().header("You can configure every mob name (without spaces) or a default!");
         config.addDefault("chargeSameMob", false);
         config.addDefault("chargeXP", false);
         config.addDefault("chargeBoth", false);

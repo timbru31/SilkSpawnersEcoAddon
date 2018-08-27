@@ -26,7 +26,7 @@ public class SilkSpawnersEcoAddonUtil {
         boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
         boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
         Player player = event.getPlayer();
-        short entityID = event.getEntityID();
+        String entityID = event.getEntityID();
         String mode = null;
         if (isChangeEvent) {
             mode = ".change";
@@ -37,7 +37,7 @@ public class SilkSpawnersEcoAddonUtil {
         }
 
         if (isChangeEvent) {
-            short spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
+            String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
             if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob")));
                 return false;
@@ -51,9 +51,6 @@ public class SilkSpawnersEcoAddonUtil {
         if (plugin.getConfig().contains(name)) {
             priceXP = plugin.getConfig().getDouble(name + mode + ".xp");
             priceMoney = plugin.getConfig().getDouble(name + mode + ".money");
-        } else if (plugin.getConfig().contains(Short.toString(entityID))) {
-            priceXP = plugin.getConfig().getDouble(Short.toString(entityID) + mode + ".xp");
-            priceMoney = plugin.getConfig().getDouble(Short.toString(entityID) + mode + ".money");
         }
 
         if (priceXP == 0 && priceMoney == 0 || player.hasPermission("silkspawners.free")) {

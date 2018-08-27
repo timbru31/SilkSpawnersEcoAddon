@@ -20,7 +20,6 @@ This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP
   * Placing spawners
 * Uses pure SilkSpawners API
 * Fallback and flexible configuration of each mob
-* Name and ID support
 * No multiple charging of a mob (when changing)
 * Second command/action as a confirmation needed (optional)
 
@@ -29,7 +28,7 @@ This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP
 
 ## Standard config
 ```yaml
-# You can configure every entityID/name (without spaces) or a default!
+# You can configure every mob name (without spaces) or a default!
 chargeSameMob: false
 chargeXP: false
 chargeBoth: false
