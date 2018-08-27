@@ -38,7 +38,7 @@ public class SilkSpawnersEcoAddonUtil {
 
         if (isChangeEvent) {
             String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
-            if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID == spawnerID) {
+            if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID.equalsIgnoreCase(spawnerID)) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob")));
                 return false;
             }
