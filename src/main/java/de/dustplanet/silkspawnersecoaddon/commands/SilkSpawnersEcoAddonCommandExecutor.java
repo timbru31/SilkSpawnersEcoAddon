@@ -23,7 +23,7 @@ public class SilkSpawnersEcoAddonCommandExecutor implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (args.length != 1 || !args[0].equalsIgnoreCase("reload")) {
+        if (args.length != 1 || !"reload".equalsIgnoreCase(args[0])) {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("commandUsage")));
         } else {
             if (sender.hasPermission("silkspawners.reload") || sender instanceof ConsoleCommandSender) {

@@ -55,7 +55,7 @@ public class ScalarYamlConfiguration extends YamlConfiguration {
         String header = buildHeader();
         String dump = yaml.dump(getValues(false));
 
-        if (dump.equals(BLANK_CONFIG)) {
+        if (BLANK_CONFIG.equals(dump)) {
             dump = "";
         }
 

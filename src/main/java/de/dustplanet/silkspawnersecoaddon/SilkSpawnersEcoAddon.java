@@ -134,11 +134,11 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private void loadConfig() {
         FileConfiguration config = getConfig();
         config.options().header("You can configure every mob name (without spaces) or a default!");
-        config.addDefault("chargeSameMob", false);
-        config.addDefault("chargeXP", false);
-        config.addDefault("chargeBoth", false);
-        config.addDefault("chargeMultipleAmounts", false);
-        config.addDefault("confirmation.enabled", false);
+        config.addDefault("chargeSameMob", Boolean.FALSE);
+        config.addDefault("chargeXP", Boolean.FALSE);
+        config.addDefault("chargeBoth", Boolean.FALSE);
+        config.addDefault("chargeMultipleAmounts", Boolean.FALSE);
+        config.addDefault("confirmation.enabled", Boolean.FALSE);
         config.addDefault("confirmation.delay", 30);
         config.addDefault("default.money.break", 10.5);
         config.addDefault("default.money.change", 10.5);

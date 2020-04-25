@@ -1,5 +1,6 @@
 package de.dustplanet.silkspawnersecoaddon.util;
 
+import java.util.Locale;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -44,7 +45,7 @@ public class SilkSpawnersEcoAddonUtil {
             }
         }
 
-        String name = su.getCreatureName(entityID).toLowerCase().replace(" ", "");
+        String name = su.getCreatureName(entityID).toLowerCase(Locale.ENGLISH).replace(" ", "");
         double priceMoney = plugin.getConfig().getDouble("default" + mode + ".money");
         double priceXP = plugin.getConfig().getDouble("default" + mode + ".xp");
 
@@ -83,7 +84,7 @@ public class SilkSpawnersEcoAddonUtil {
         }
     }
 
-    public void sendConfirmationMessage(Player player, double priceXP, double priceMoney) {
+    private void sendConfirmationMessage(Player player, double priceXP, double priceMoney) {
         if (plugin.isChargeBoth()) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("confirmationPendingBoth"))
                     .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
@@ -96,7 +97,7 @@ public class SilkSpawnersEcoAddonUtil {
         }
     }
 
-    public boolean chargeMoney(Player player, double priceMoney) {
+    private boolean chargeMoney(Player player, double priceMoney) {
         if (plugin.getEcon().has(player, priceMoney)) {
             plugin.getEcon().withdrawPlayer(player, priceMoney);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordMoney"))
@@ -107,7 +108,7 @@ public class SilkSpawnersEcoAddonUtil {
         return true;
     }
 
-    public boolean chargeBoth(Player player, double priceXP, double priceMoney, int totalXP) {
+    private boolean chargeBoth(Player player, double priceXP, double priceMoney, int totalXP) {
         boolean canAffordXP = totalXP >= priceXP;
         boolean canAffordMoney = plugin.getEcon().has(player, priceMoney);
         if (canAffordXP && canAffordMoney) {
@@ -129,7 +130,7 @@ public class SilkSpawnersEcoAddonUtil {
         return true;
     }
 
-    public boolean chargeXP(Player player, double priceXP, int totalXP) {
+    private boolean chargeXP(Player player, double priceXP, int totalXP) {
         if (totalXP >= priceXP) {
             totalXP -= priceXP;
             player.setTotalExperience(0);
