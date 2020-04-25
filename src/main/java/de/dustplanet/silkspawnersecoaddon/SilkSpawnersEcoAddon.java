@@ -29,7 +29,7 @@ import net.milkbowl.vault.economy.Economy;
  * @author xGhOsTkiLLeRx
  */
 
-public class SilkSpawnersEcoAddon extends JavaPlugin { 
+public class SilkSpawnersEcoAddon extends JavaPlugin {
     private static final int BSTATS_PLUGIN_ID = 550;
     private static final long TICKS_PER_SECOND = 20L;
     @Getter
@@ -60,6 +60,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         disable();
     }
 
+    @SuppressWarnings("unused")
     @Override
     public void onEnable() {
         setSilkUtil(SilkUtil.hookIntoSilkSpanwers());
