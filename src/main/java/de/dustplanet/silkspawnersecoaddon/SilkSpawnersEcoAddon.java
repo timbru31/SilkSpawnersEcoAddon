@@ -29,8 +29,8 @@ import net.milkbowl.vault.economy.Economy;
  * @author xGhOsTkiLLeRx
  */
 
-public class SilkSpawnersEcoAddon extends JavaPlugin {
-
+public class SilkSpawnersEcoAddon extends JavaPlugin { 
+    private static final int BSTATS_PLUGIN_ID = 550;
     private static final long TICKS_PER_SECOND = 20L;
     @Getter
     @Setter
@@ -99,7 +99,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonSpawnerBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new SilkSpawnersEcoAddonSpawnerPlaceListener(this), this);
 
-        new Metrics(this);
+        new Metrics(this, BSTATS_PLUGIN_ID);
 
         registerTask();
     }
