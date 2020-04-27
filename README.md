@@ -1,7 +1,7 @@
 # SilkSpawnersEcoAddon
 [![Build Status](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
 [![Build Status](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon.svg?branch=master)](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon)
-[![Build status](https://ci.appveyor.com/api/projects/status/8c1a9y2tdl8xwhhn?svg=true)](https://ci.appveyor.com/project/timbru31/silkspawnersecoaddon)
+[![Build the plugin](https://github.com/timbru31/SilkSpawnersEcoAddon/workflows/Build%20the%20plugin/badge.svg)](https://github.com/timbru31/SilkSpawnersEcoAddon/actions?query=workflow%3A%22Build+the+plugin%22)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/silkspawnersecoaddon/badge.svg)](https://snyk.io/test/github/timbru31/silkspawnersecoaddon)
 
 [![BukkitDev](https://img.shields.io/badge/BukkitDev-v2.0.0-orange.svg)](https://dev.bukkit.org/projects/silkspawnersecoaddon)
