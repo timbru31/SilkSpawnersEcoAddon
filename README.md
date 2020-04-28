@@ -84,7 +84,8 @@ Feel free to submit any PRs here. :)
 Please follow the Sun Coding Guidelines, thanks!
 
 ## Usage statistics
-_stats images are returning soon!_
+
+[![Usage statistics](https://bstats.org/signatures/bukkit/SilkSpawnersEcoAddon.svg)](https://bstats.org/plugin/bukkit/SilkSpawnersEcoAddon/550)
 
 ## Data usage collection of bStats
 
