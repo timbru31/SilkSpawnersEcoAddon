@@ -4,8 +4,8 @@
 [![Build the plugin](https://github.com/timbru31/SilkSpawnersEcoAddon/workflows/Build%20the%20plugin/badge.svg)](https://github.com/timbru31/SilkSpawnersEcoAddon/actions?query=workflow%3A%22Build+the+plugin%22)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/silkspawnersecoaddon/badge.svg)](https://snyk.io/test/github/timbru31/silkspawnersecoaddon)
 
-[![BukkitDev](https://img.shields.io/badge/BukkitDev-v2.0.0-orange.svg)](https://dev.bukkit.org/projects/silkspawnersecoaddon)
-[![SpigotMC](https://img.shields.io/badge/SpigotMC-v2.0.0-orange.svg)](https://www.spigotmc.org/resources/8089/)
+[![BukkitDev](https://img.shields.io/badge/BukkitDev-v3.0.0-orange.svg)](https://dev.bukkit.org/projects/silkspawnersecoaddon)
+[![SpigotMC](https://img.shields.io/badge/SpigotMC-v3.0.0-orange.svg)](https://www.spigotmc.org/resources/8089/)
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
