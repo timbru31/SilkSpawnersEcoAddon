@@ -1,3 +1,8 @@
+---
+name: 🐛 Bug report
+about: Something's broken and you want to report it.
+---
+
 ## What steps will reproduce the problem?
 
 ## Expected output
@@ -8,15 +13,18 @@
 
 ## /version output?
 
-<!-- Please note that _without_ the specific version output your issue might be _IGNORED_ -->
+<!-- Please note that _WITHOUT_ the specific version output your issue _WILL BE IGNORED_ -->
+<!-- A /version output looks like this: This server is running CraftBukkit version git-Spigot-06f33d0-86fdf92 (MC: 1.12.2) (Implementing API version 1.12.2-R0.1-SNAPSHOT) -->
+
+<!-- Adding e.g. only 1.12.2 will lead _IGNORED ISSUES_ -->
 
 ## SilkSpawners version
 
-<!-- _LATEST_ is not a valid version -->
+<!-- _LATEST_ is _NOT_ a valid version -->
 
 ## SilkSpawnersEcoAddon version
 
-<!-- _LATEST_ is not a valid version -->
+<!-- _LATEST_ is _NOT_ a valid version -->
 
 ## Please provide any additional information below.
 
