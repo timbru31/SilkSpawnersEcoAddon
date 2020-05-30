@@ -65,6 +65,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
     @SuppressWarnings("unused")
     @Override
+    @SuppressFBWarnings("SEC_SIDE_EFFECT_CONSTRUCTOR")
     public void onEnable() {
         setSilkUtil(SilkUtil.hookIntoSilkSpanwers());
 
@@ -119,7 +120,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         registerTask();
     }
 
-    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressFBWarnings({ "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE",
+            "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" })
     private void copy(String yml, File file) {
         try (OutputStream out = Files.newOutputStream(file.toPath()); InputStream in = getResource(yml)) {
             byte[] buf = new byte[1024];
