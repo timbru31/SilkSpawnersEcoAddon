@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import de.dustplanet.silkspawners.events.SilkSpawnersSpawnerChangeEvent;
 import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 import de.dustplanet.silkspawnersecoaddon.util.SilkSpawnersEcoAddonUtil;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
  * This is the listener of the custom event to charge the user.
@@ -14,12 +15,11 @@ import de.dustplanet.silkspawnersecoaddon.util.SilkSpawnersEcoAddonUtil;
  */
 
 public class SilkSpawnersEcoAddonSpawnerChangeListener implements Listener {
-    private SilkSpawnersEcoAddon plugin;
     private SilkSpawnersEcoAddonUtil util;
 
+    @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
     public SilkSpawnersEcoAddonSpawnerChangeListener(SilkSpawnersEcoAddon instance) {
-        plugin = instance;
-        util = new SilkSpawnersEcoAddonUtil(plugin, plugin.getSilkUtil());
+        util = new SilkSpawnersEcoAddonUtil(instance, instance.getSilkUtil());
     }
 
     @EventHandler

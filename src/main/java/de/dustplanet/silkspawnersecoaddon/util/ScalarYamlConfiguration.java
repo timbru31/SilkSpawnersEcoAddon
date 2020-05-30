@@ -39,7 +39,7 @@ public class ScalarYamlConfiguration extends YamlConfiguration {
         try {
             config.load(file);
         } catch (IOException | InvalidConfigurationException ex) {
-            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file, ex);
+            Bukkit.getLogger().log(Level.SEVERE, "Cannot load " + file.getPath().replaceAll("[\r\n]", ""), ex);
         }
 
         return config;

@@ -1,14 +1,16 @@
 package de.dustplanet.silkspawnersecoaddon;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.bstats.bukkit.Metrics;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -19,6 +21,7 @@ import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoAddonSpawnerC
 import de.dustplanet.silkspawnersecoaddon.listeners.SilkSpawnersEcoAddonSpawnerPlaceListener;
 import de.dustplanet.silkspawnersecoaddon.util.ScalarYamlConfiguration;
 import de.dustplanet.util.SilkUtil;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
@@ -28,7 +31,7 @@ import net.milkbowl.vault.economy.Economy;
  *
  * @author xGhOsTkiLLeRx
  */
-
+@SuppressFBWarnings({ "FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY", "CD_CIRCULAR_DEPENDENCY" })
 public class SilkSpawnersEcoAddon extends JavaPlugin {
     private static final int BSTATS_PLUGIN_ID = 550;
     private static final long TICKS_PER_SECOND = 20L;
@@ -87,7 +90,10 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setLocalization(ScalarYamlConfiguration.loadConfiguration(localizationFile));
         loadLocalization();
 
-        getCommand("silkspawnerseco").setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
+        PluginCommand command = getCommand("silkspawnerseco");
+        if (command != null) {
+            command.setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
+        }
 
         if (setupEconomy()) {
             getLogger().info("Loaded Vault successfully");
@@ -113,16 +119,16 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         registerTask();
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
     private void copy(String yml, File file) {
-        try (OutputStream out = new FileOutputStream(file); InputStream in = getResource(yml)) {
+        try (OutputStream out = Files.newOutputStream(file.toPath()); InputStream in = getResource(yml)) {
             byte[] buf = new byte[1024];
             int len;
             while ((len = in.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
         } catch (IOException e) {
-            getLogger().warning("Failed to copy the default config! (I/O)");
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Failed to copy the default config! (I/O)", e);
         }
     }
 
@@ -166,6 +172,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setConfirmation(config.getBoolean("confirmation.enabled"));
     }
 
+    @SuppressFBWarnings(value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR", justification = "onEnable is our \"constructor\"")
     private void loadLocalization() {
         localization.addDefault("cantAffordMoney",
                 "&e[SilkSpawnersEco] &4Sorry, but you can't do this action, because you have not enough money!");
@@ -188,12 +195,12 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         saveLocalization();
     }
 
+    @SuppressFBWarnings(value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR", justification = "onEnable is our \"constructor\"")
     private void saveLocalization() {
         try {
             localization.save(localizationFile);
         } catch (IOException e) {
-            getLogger().warning("Failed to save the localization! Please report this! (I/O)");
-            e.printStackTrace();
+            getLogger().log(Level.WARNING, "Failed to save the localization! Please report this! (I/O)", e);
         }
     }
 
@@ -208,6 +215,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         }
     }
 
+    @SuppressFBWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", justification = "False positive")
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().severe("Vault seems to be missing. Make sure to install the latest version of Vault!");
