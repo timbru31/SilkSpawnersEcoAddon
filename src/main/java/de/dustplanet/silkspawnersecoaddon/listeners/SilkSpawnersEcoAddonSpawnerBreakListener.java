@@ -8,16 +8,23 @@ import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 import de.dustplanet.silkspawnersecoaddon.util.SilkSpawnersEcoAddonUtil;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+/**
+ * Block listener that calculates charging if a spawner is mined.
+ *
+ * @author timbru31
+ */
 public class SilkSpawnersEcoAddonSpawnerBreakListener implements Listener {
-    private SilkSpawnersEcoAddonUtil util;
+    private final SilkSpawnersEcoAddonUtil util;
 
     @SuppressFBWarnings({ "FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY", "CD_CIRCULAR_DEPENDENCY", "IMC_IMMATURE_CLASS_NO_TOSTRING" })
-    public SilkSpawnersEcoAddonSpawnerBreakListener(SilkSpawnersEcoAddon instance) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public SilkSpawnersEcoAddonSpawnerBreakListener(final SilkSpawnersEcoAddon instance) {
         util = new SilkSpawnersEcoAddonUtil(instance, instance.getSilkUtil());
     }
 
     @EventHandler
-    public void onSpawnerBreak(SilkSpawnersSpawnerBreakEvent event) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onSpawnerBreak(final SilkSpawnersSpawnerBreakEvent event) {
         event.setCancelled(util.handleGenericEvent(event));
     }
 }

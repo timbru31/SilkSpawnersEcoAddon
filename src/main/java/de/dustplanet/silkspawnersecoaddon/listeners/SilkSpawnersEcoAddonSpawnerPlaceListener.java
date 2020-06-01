@@ -8,16 +8,23 @@ import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 import de.dustplanet.silkspawnersecoaddon.util.SilkSpawnersEcoAddonUtil;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+/**
+ * Block listener that calculates charging if a spawner is placed down.
+ *
+ * @author timbru31
+ */
 public class SilkSpawnersEcoAddonSpawnerPlaceListener implements Listener {
-    private SilkSpawnersEcoAddonUtil util;
+    private final SilkSpawnersEcoAddonUtil util;
 
     @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
-    public SilkSpawnersEcoAddonSpawnerPlaceListener(SilkSpawnersEcoAddon instance) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public SilkSpawnersEcoAddonSpawnerPlaceListener(final SilkSpawnersEcoAddon instance) {
         util = new SilkSpawnersEcoAddonUtil(instance, instance.getSilkUtil());
     }
 
     @EventHandler
-    public void onSpawnerPlace(SilkSpawnersSpawnerPlaceEvent event) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onSpawnerPlace(final SilkSpawnersSpawnerPlaceEvent event) {
         event.setCancelled(util.handleGenericEvent(event));
     }
 }

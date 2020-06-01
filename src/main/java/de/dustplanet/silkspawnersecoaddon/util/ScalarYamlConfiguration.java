@@ -14,6 +14,12 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.representer.Representer;
 
+/**
+ * YAML config extension to allow scalars which are not available per default.
+ *
+ * @author timbru31
+ */
+@SuppressWarnings({ "checkstyle:MissingCtor", "PMD.AtLeastOneConstructor", "PMD.CommentSize" })
 public class ScalarYamlConfiguration extends YamlConfiguration {
     private final DumperOptions yamlOptions = new DumperOptions();
     private final Representer yamlRepresenter = new YamlRepresenter();
@@ -31,10 +37,10 @@ public class ScalarYamlConfiguration extends YamlConfiguration {
      * @return Resulting configuration
      * @throws IllegalArgumentException Thrown if file is null
      */
-    public static ScalarYamlConfiguration loadConfiguration(File file) {
+    public static ScalarYamlConfiguration loadConfiguration(final File file) {
         Validate.notNull(file, "File cannot be null");
 
-        ScalarYamlConfiguration config = new ScalarYamlConfiguration();
+        final ScalarYamlConfiguration config = new ScalarYamlConfiguration();
 
         try {
             config.load(file);
@@ -52,7 +58,7 @@ public class ScalarYamlConfiguration extends YamlConfiguration {
         yamlOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
         yamlRepresenter.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-        String header = buildHeader();
+        final String header = buildHeader();
         String dump = yaml.dump(getValues(false));
 
         if (BLANK_CONFIG.equals(dump)) {

@@ -14,24 +14,32 @@ import de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon;
 import de.dustplanet.util.SilkUtil;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
+/**
+ * Utility class to handle a generic break/place/change event.
+ *
+ * @author timbru31
+ */
+@SuppressWarnings("checkstyle:MultipleStringLiterals")
 public class SilkSpawnersEcoAddonUtil {
-    private SilkSpawnersEcoAddon plugin;
-    private SilkUtil su;
+    private final SilkSpawnersEcoAddon plugin;
+    private final SilkUtil silkUtil;
 
     @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
-    public SilkSpawnersEcoAddonUtil(SilkSpawnersEcoAddon instance, SilkUtil silkUtil) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public SilkSpawnersEcoAddonUtil(final SilkSpawnersEcoAddon instance, final SilkUtil silkUtilInstance) {
         plugin = instance;
-        su = silkUtil;
+        this.silkUtil = silkUtilInstance;
     }
 
     @SuppressFBWarnings(value = { "BC_UNCONFIRMED_CAST",
             "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" }, justification = "False positive and a default value is given and prevents a NPE")
-    public boolean handleGenericEvent(ISilkSpawnersEvent event) {
-        boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
-        boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
-        boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
-        Player player = event.getPlayer();
-        String entityID = event.getEntityID();
+    @SuppressWarnings({ "PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis", "checkstyle:MissingJavadocMethod" })
+    public boolean handleGenericEvent(final ISilkSpawnersEvent event) {
+        final boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
+        final boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
+        final boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
+        final Player player = event.getPlayer();
+        final String entityID = event.getEntityID();
         String mode = null;
         if (isChangeEvent) {
             mode = ".change";
@@ -42,14 +50,14 @@ public class SilkSpawnersEcoAddonUtil {
         }
 
         if (isChangeEvent) {
-            String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
+            final String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
             if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID.equalsIgnoreCase(spawnerID)) {
                 player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob", "")));
                 return false;
             }
         }
 
-        String name = su.getCreatureName(entityID).toLowerCase(Locale.ENGLISH).replace(" ", "");
+        final String name = silkUtil.getCreatureName(entityID).toLowerCase(Locale.ENGLISH).replace(" ", "");
         double priceMoney = plugin.getConfig().getDouble("default" + mode + ".money");
         int priceXP = plugin.getConfig().getInt("default" + mode + ".xp");
 
@@ -68,7 +76,7 @@ public class SilkSpawnersEcoAddonUtil {
         }
 
         if (plugin.isConfirmation()) {
-            UUID playerName = player.getUniqueId();
+            final UUID playerName = player.getUniqueId();
             if (!plugin.getPendingConfirmationList().contains(playerName)) {
                 plugin.getPendingConfirmationList().add(playerName);
                 sendConfirmationMessage(player, priceXP, priceMoney);
@@ -77,7 +85,7 @@ public class SilkSpawnersEcoAddonUtil {
             plugin.getPendingConfirmationList().remove(playerName);
         }
 
-        int totalXP = player.getTotalExperience();
+        final int totalXP = player.getTotalExperience();
 
         if (plugin.isChargeBoth()) {
             return chargeBoth(player, priceXP, priceMoney, totalXP);
@@ -89,7 +97,8 @@ public class SilkSpawnersEcoAddonUtil {
     }
 
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Default value is given and prevents a NPE")
-    private void sendConfirmationMessage(Player player, double priceXP, double priceMoney) {
+    @SuppressWarnings({ "PMD.AvoidDuplicateLiterals", "checkstyle:SeparatorWrap" })
+    private void sendConfirmationMessage(final Player player, final double priceXP, final double priceMoney) {
         if (plugin.isChargeBoth()) {
             player.sendMessage(
                     ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("confirmationPendingBoth", ""))
@@ -105,7 +114,8 @@ public class SilkSpawnersEcoAddonUtil {
     }
 
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Default value is given and prevents a NPE")
-    private boolean chargeMoney(Player player, double priceMoney) {
+    @SuppressWarnings("checkstyle:SeparatorWrap")
+    private boolean chargeMoney(final Player player, final double priceMoney) {
         if (plugin.getEcon().has(player, priceMoney)) {
             plugin.getEcon().withdrawPlayer(player, priceMoney);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordMoney", ""))
@@ -117,13 +127,14 @@ public class SilkSpawnersEcoAddonUtil {
     }
 
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Default value is given and prevents a NPE")
-    private boolean chargeBoth(Player player, int priceXP, double priceMoney, int totalXP) {
-        boolean canAffordXP = totalXP >= priceXP;
-        boolean canAffordMoney = plugin.getEcon().has(player, priceMoney);
+    @SuppressWarnings("checkstyle:SeparatorWrap")
+    private boolean chargeBoth(final Player player, final int priceXP, final double priceMoney, final int totalXP) {
+        final boolean canAffordXP = totalXP >= priceXP;
+        final boolean canAffordMoney = plugin.getEcon().has(player, priceMoney);
         if (canAffordXP && canAffordMoney) {
             plugin.getEcon().withdrawPlayer(player, priceMoney);
 
-            int newTotalXP = totalXP - priceXP;
+            final int newTotalXP = totalXP - priceXP;
             player.setTotalExperience(0);
             player.setLevel(0);
             player.giveExp(newTotalXP);
@@ -131,18 +142,19 @@ public class SilkSpawnersEcoAddonUtil {
                     .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
             return false;
         }
-        if (!canAffordXP) {
-            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP", "")));
-        } else {
+        if (canAffordXP) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney", "")));
+        } else {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP", "")));
         }
         return true;
     }
 
     @SuppressFBWarnings(value = "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", justification = "Default value is given and prevents a NPE")
-    private boolean chargeXP(Player player, int priceXP, int totalXP) {
+    @SuppressWarnings("checkstyle:SeparatorWrap")
+    private boolean chargeXP(final Player player, final int priceXP, final int totalXP) {
         if (totalXP >= priceXP) {
-            int newTotalXP = totalXP - priceXP;
+            final int newTotalXP = totalXP - priceXP;
             player.setTotalExperience(0);
             player.setLevel(0);
             player.giveExp(newTotalXP);

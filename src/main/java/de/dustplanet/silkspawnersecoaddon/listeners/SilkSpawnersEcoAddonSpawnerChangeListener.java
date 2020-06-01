@@ -9,21 +9,22 @@ import de.dustplanet.silkspawnersecoaddon.util.SilkSpawnersEcoAddonUtil;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 /**
- * This is the listener of the custom event to charge the user.
+ * Block listener that calculates charging if a spawner is changed.
  *
- * @author xGhOsTkiLLeRx
+ * @author timbru31
  */
-
 public class SilkSpawnersEcoAddonSpawnerChangeListener implements Listener {
-    private SilkSpawnersEcoAddonUtil util;
+    private final SilkSpawnersEcoAddonUtil util;
 
     @SuppressFBWarnings("IMC_IMMATURE_CLASS_NO_TOSTRING")
-    public SilkSpawnersEcoAddonSpawnerChangeListener(SilkSpawnersEcoAddon instance) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public SilkSpawnersEcoAddonSpawnerChangeListener(final SilkSpawnersEcoAddon instance) {
         util = new SilkSpawnersEcoAddonUtil(instance, instance.getSilkUtil());
     }
 
     @EventHandler
-    public void onSpawnerChange(SilkSpawnersSpawnerChangeEvent event) {
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public void onSpawnerChange(final SilkSpawnersSpawnerChangeEvent event) {
         event.setCancelled(util.handleGenericEvent(event));
     }
 

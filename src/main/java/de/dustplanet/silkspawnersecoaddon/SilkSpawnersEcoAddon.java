@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
@@ -27,18 +28,20 @@ import lombok.Setter;
 import net.milkbowl.vault.economy.Economy;
 
 /**
- * General stuff (config).
+ * General loading of the plugin, config and localization files.
  *
- * @author xGhOsTkiLLeRx
+ * @author timbru31
  */
 @SuppressFBWarnings({ "FCCD_FIND_CLASS_CIRCULAR_DEPENDENCY", "CD_CIRCULAR_DEPENDENCY" })
+@SuppressWarnings({ "checkstyle:MultipleStringLiterals", "checkstyle:MissingCtor", "PMD.AtLeastOneConstructor" })
 public class SilkSpawnersEcoAddon extends JavaPlugin {
+    private static final int BUFFER_SIZE = 1024;
     private static final int BSTATS_PLUGIN_ID = 550;
     private static final long TICKS_PER_SECOND = 20L;
     @Getter
     @Setter
     private FileConfiguration localization;
-    private File configFile, localizationFile;
+    private File localizationFile;
     @Getter
     @Setter
     private Economy econ;
@@ -53,7 +56,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private boolean confirmation;
     @Getter
     @Setter
-    private ArrayList<UUID> pendingConfirmationList = new ArrayList<>();
+    private List<UUID> pendingConfirmationList = new ArrayList<>();
     @Getter
     @Setter
     private SilkUtil silkUtil;
@@ -69,7 +72,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     public void onEnable() {
         setSilkUtil(SilkUtil.hookIntoSilkSpanwers());
 
-        configFile = new File(getDataFolder(), "config.yml");
+        final File configFile = new File(getDataFolder(), "config.yml");
         if (!configFile.exists()) {
             if (configFile.getParentFile().mkdirs()) {
                 copy("config.yml", configFile);
@@ -91,7 +94,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setLocalization(ScalarYamlConfiguration.loadConfiguration(localizationFile));
         loadLocalization();
 
-        PluginCommand command = getCommand("silkspawnerseco");
+        final PluginCommand command = getCommand("silkspawnerseco");
         if (command != null) {
             command.setExecutor(new SilkSpawnersEcoAddonCommandExecutor(this));
         }
@@ -112,24 +115,26 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         registerTask();
     }
 
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
     public void reload() {
         disable();
         this.reloadConfig();
-        FileConfiguration config = getConfig();
+        final FileConfiguration config = getConfig();
         setConfirmation(config.getBoolean("confirmation.enabled"));
         registerTask();
     }
 
     @SuppressFBWarnings({ "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE", "RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE",
             "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE" })
-    private void copy(String yml, File file) {
-        try (OutputStream out = Files.newOutputStream(file.toPath()); InputStream in = getResource(yml)) {
-            byte[] buf = new byte[1024];
+    @SuppressWarnings({ "PMD.AssignmentInOperand", "PMD.DataflowAnomalyAnalysis" })
+    private void copy(final String yml, final File file) {
+        try (OutputStream out = Files.newOutputStream(file.toPath()); InputStream inputStream = getResource(yml)) {
+            final byte[] buf = new byte[BUFFER_SIZE];
             int len;
-            while ((len = in.read(buf)) > 0) {
+            while ((len = inputStream.read(buf)) > 0) {
                 out.write(buf, 0, len);
             }
-        } catch (IOException e) {
+        } catch (final IOException e) {
             getLogger().log(Level.WARNING, "Failed to copy the default config! (I/O)", e);
         }
     }
@@ -139,8 +144,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         getPendingConfirmationList().clear();
     }
 
+    @SuppressWarnings({ "checkstyle:ExecutableStatementCount", "checkstyle:MagicNumber" })
     private void loadConfig() {
-        FileConfiguration config = getConfig();
+        final FileConfiguration config = getConfig();
         config.options().header("You can configure every mob name (without spaces) or a default!");
         config.addDefault("chargeSameMob", Boolean.FALSE);
         config.addDefault("chargeXP", Boolean.FALSE);
@@ -175,6 +181,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     @SuppressFBWarnings(value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR", justification = "onEnable is our \"constructor\"")
+    @SuppressWarnings("checkstyle:LineLength")
     private void loadLocalization() {
         localization.addDefault("cantAffordMoney",
                 "&e[SilkSpawnersEco] &4Sorry, but you can't do this action, because you have not enough money!");
@@ -201,7 +208,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private void saveLocalization() {
         try {
             localization.save(localizationFile);
-        } catch (IOException e) {
+        } catch (final IOException e) {
             getLogger().log(Level.WARNING, "Failed to save the localization! Please report this! (I/O)", e);
         }
     }
@@ -218,12 +225,13 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     }
 
     @SuppressFBWarnings(value = "RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE", justification = "False positive")
+    @SuppressWarnings("checkstyle:ReturnCount")
     private boolean setupEconomy() {
         if (getServer().getPluginManager().getPlugin("Vault") == null) {
             getLogger().severe("Vault seems to be missing. Make sure to install the latest version of Vault!");
             return false;
         }
-        RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
+        final RegisteredServiceProvider<Economy> rsp = getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null || rsp.getProvider() == null) {
             getLogger().severe("There is no economy provider installed for Vault! Make sure to install an economy plugin!");
             return false;
