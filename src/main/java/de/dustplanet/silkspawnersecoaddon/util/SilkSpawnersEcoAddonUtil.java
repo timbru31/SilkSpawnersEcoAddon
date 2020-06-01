@@ -3,6 +3,8 @@ package de.dustplanet.silkspawnersecoaddon.util;
 import java.util.Locale;
 import java.util.UUID;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -33,30 +35,18 @@ public class SilkSpawnersEcoAddonUtil {
 
     @SuppressFBWarnings(value = { "BC_UNCONFIRMED_CAST",
             "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" }, justification = "False positive and a default value is given and prevents a NPE")
-    @SuppressWarnings({ "PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis", "checkstyle:MissingJavadocMethod" })
+    @SuppressWarnings({ "PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis", "checkstyle:MissingJavadocMethod",
+            "checkstyle:ReturnCount", "PMD.CyclomaticComplexity" })
     public boolean handleGenericEvent(final ISilkSpawnersEvent event) {
-        final boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
-        final boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
-        final boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
         final Player player = event.getPlayer();
         final String entityID = event.getEntityID();
-        String mode = null;
-        if (isChangeEvent) {
-            mode = ".change";
-        } else if (isBreakEvent) {
-            mode = ".break";
-        } else if (isPlaceEvent) {
-            mode = ".place";
+        final boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
+
+        if (isChangeEvent && abortBecauseOfSameMobInChangeEvent(player, event, entityID)) {
+            return false;
         }
 
-        if (isChangeEvent) {
-            final String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
-            if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID.equalsIgnoreCase(spawnerID)) {
-                player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob", "")));
-                return false;
-            }
-        }
-
+        final String mode = getModeFromEvent(event);
         final String name = silkUtil.getCreatureName(entityID).toLowerCase(Locale.ENGLISH).replace(" ", "");
         double priceMoney = plugin.getConfig().getDouble("default" + mode + ".money");
         int priceXP = plugin.getConfig().getInt("default" + mode + ".xp");
@@ -75,6 +65,42 @@ public class SilkSpawnersEcoAddonUtil {
             priceMoney *= ((SilkSpawnersSpawnerChangeEvent) event).getAmount();
         }
 
+        if (shouldAbortBecauseOfConfirmation(player, priceMoney, priceMoney)) {
+            return true;
+        }
+
+        final int totalXP = player.getTotalExperience();
+
+        return chargePlayer(player, priceMoney, priceXP, totalXP);
+    }
+
+    private boolean abortBecauseOfSameMobInChangeEvent(final Player player, final ISilkSpawnersEvent event, final String entityID) {
+        final String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
+        if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID.equalsIgnoreCase(spawnerID)) {
+            player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob", "")));
+            return true;
+        }
+        return false;
+    }
+
+    @SuppressWarnings({ "static-method", "PMD.DataflowAnomalyAnalysis" })
+    @Nullable
+    private String getModeFromEvent(final ISilkSpawnersEvent event) {
+        String mode = null;
+        final boolean isChangeEvent = event instanceof SilkSpawnersSpawnerChangeEvent;
+        final boolean isBreakEvent = event instanceof SilkSpawnersSpawnerBreakEvent;
+        final boolean isPlaceEvent = event instanceof SilkSpawnersSpawnerPlaceEvent;
+        if (isChangeEvent) {
+            mode = ".change";
+        } else if (isBreakEvent) {
+            mode = ".break";
+        } else if (isPlaceEvent) {
+            mode = ".place";
+        }
+        return mode;
+    }
+
+    private boolean shouldAbortBecauseOfConfirmation(final Player player, final double priceXP, final double priceMoney) {
         if (plugin.isConfirmation()) {
             final UUID playerName = player.getUniqueId();
             if (!plugin.getPendingConfirmationList().contains(playerName)) {
@@ -84,9 +110,10 @@ public class SilkSpawnersEcoAddonUtil {
             }
             plugin.getPendingConfirmationList().remove(playerName);
         }
+        return false;
+    }
 
-        final int totalXP = player.getTotalExperience();
-
+    private boolean chargePlayer(final Player player, final double priceMoney, final int priceXP, final int totalXP) {
         if (plugin.isChargeBoth()) {
             return chargeBoth(player, priceXP, priceMoney, totalXP);
         } else if (plugin.isChargeXP()) {
