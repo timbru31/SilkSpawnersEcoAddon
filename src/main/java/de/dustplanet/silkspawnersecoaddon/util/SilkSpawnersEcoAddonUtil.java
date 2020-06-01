@@ -33,8 +33,7 @@ public class SilkSpawnersEcoAddonUtil {
         this.silkUtil = silkUtilInstance;
     }
 
-    @SuppressFBWarnings(value = { "BC_UNCONFIRMED_CAST",
-            "NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE" }, justification = "False positive and a default value is given and prevents a NPE")
+    @SuppressFBWarnings(value = "BC_UNCONFIRMED_CAST", justification = "False positive and a default value is given and prevents a NPE")
     @SuppressWarnings({ "PMD.AvoidDuplicateLiterals", "PMD.DataflowAnomalyAnalysis", "checkstyle:MissingJavadocMethod",
             "checkstyle:ReturnCount", "PMD.CyclomaticComplexity" })
     public boolean handleGenericEvent(final ISilkSpawnersEvent event) {
@@ -74,9 +73,11 @@ public class SilkSpawnersEcoAddonUtil {
         return chargePlayer(player, priceMoney, priceXP, totalXP);
     }
 
+    @SuppressFBWarnings("NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE")
+    @SuppressWarnings("PMD.AvoidDuplicateLiterals")
     private boolean abortBecauseOfSameMobInChangeEvent(final Player player, final ISilkSpawnersEvent event, final String entityID) {
         final String spawnerID = ((SilkSpawnersSpawnerChangeEvent) event).getOldEntityID();
-        if (!plugin.getConfig().getBoolean("chargeSameMob") && entityID.equalsIgnoreCase(spawnerID)) {
+        if (!plugin.getConfig().getBoolean("chargeSameMob", false) && entityID.equalsIgnoreCase(spawnerID)) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("sameMob", "")));
             return true;
         }
