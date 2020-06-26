@@ -39,7 +39,7 @@
     <dependency>
       <groupId>de.dustplanet</groupId>
       <artifactId>silkspawners</artifactId>
-      <version>6.1.0</version>
+      <version>6.3.1</version>
       <exclusions>
         <exclusion>
           <groupId>*</groupId>
