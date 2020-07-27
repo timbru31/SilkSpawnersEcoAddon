@@ -1,4 +1,5 @@
 # You can configure every mob name (without spaces) or a default!
+autoUpdater: true
 chargeSameMob: false
 chargeXP: false
 chargeBoth: false

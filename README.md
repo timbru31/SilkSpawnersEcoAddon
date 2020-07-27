@@ -22,10 +22,12 @@ This CraftBukkit/Spigot plugin adds an optional economy feature (via Vault or XP
 
 *Third party features, all of them can be disabled*
 * bStats for usage statistics
+* Auto Updater (connecting to https://dev.bukkit.org for updating checking)
 
 ## Standard config
 ```yaml
 # You can configure every mob name (without spaces) or a default!
+autoUpdater: true
 chargeSameMob: false
 chargeXP: false
 chargeBoth: false

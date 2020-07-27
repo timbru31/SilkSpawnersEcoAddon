@@ -25,6 +25,7 @@ import de.dustplanet.util.SilkUtil;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import lombok.Getter;
 import lombok.Setter;
+import net.gravitydevelopment.updater.Updater;
 import net.milkbowl.vault.economy.Economy;
 
 /**
@@ -38,6 +39,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private static final int BUFFER_SIZE = 1024;
     private static final int BSTATS_PLUGIN_ID = 550;
     private static final long TICKS_PER_SECOND = 20L;
+    private static final int PLUGIN_ID = 52_026;
     @Getter
     @Setter
     private FileConfiguration localization;
@@ -86,6 +88,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
 
         loadConfig();
 
+        checkForUpdate();
+
         localizationFile = new File(getDataFolder(), "localization.yml");
         if (!localizationFile.exists()) {
             copy("localization.yml", localizationFile);
@@ -113,6 +117,25 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         new Metrics(this, BSTATS_PLUGIN_ID);
 
         registerTask();
+    }
+
+    @SuppressWarnings({ "PMD.AvoidCatchingGenericException", "checkstyle:IllegalCatch" })
+    private void checkForUpdate() {
+        if (getConfig().getBoolean("autoUpdater", true)) {
+            if (getDescription().getVersion().contains("SNAPSHOT")) {
+                getLogger().info("AutoUpdater is disabled because you are running a dev build!");
+            } else {
+                try {
+                    final Updater updater = new Updater(this, PLUGIN_ID, getFile(), Updater.UpdateType.DEFAULT, true);
+                    getLogger().info("AutoUpdater is enabled.");
+                    getLogger().info("Result from AutoUpdater is: " + updater.getResult().name());
+                } catch (final Exception e) {
+                    getLogger().info("Error while auto updating: " + e.getMessage().replaceAll("[\r\n]", ""));
+                }
+            }
+        } else {
+            getLogger().info("AutoUpdater is disabled due to config setting.");
+        }
     }
 
     @SuppressWarnings("checkstyle:MissingJavadocMethod")
@@ -148,6 +171,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     private void loadConfig() {
         final FileConfiguration config = getConfig();
         config.options().header("You can configure every mob name (without spaces) or a default!");
+        config.addDefault("autoUpdater", Boolean.TRUE);
         config.addDefault("chargeSameMob", Boolean.FALSE);
         config.addDefault("chargeXP", Boolean.FALSE);
         config.addDefault("chargeBoth", Boolean.FALSE);
