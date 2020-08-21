@@ -9,7 +9,7 @@
   </parent>
 
   <artifactId>SilkSpawnersEcoAddon</artifactId>
-  <version>3.0.2-SNAPSHOT</version>
+  <version>3.1.0</version>
   <name>SilkSpawnersEcoAddon</name>
   <description>Optional addon for SilkSpawners to charge (via Vault or XP) for changing monster spawners</description>
   <url>http://dev.bukkit.org/bukkit-plugins/silkspawnersecoaddon/</url>
@@ -59,6 +59,6 @@
     <url>https://github.com/timbru31/SilkSpawnersEcoAddon</url>
     <connection>scm:git:git://github.com/timbru31/SilkSpawnersEcoAddon.git</connection>
     <developerConnection>scm:git:git@github.com:timbru31/SilkSpawnersEcoAddon.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>SilkSpawnersEcoAddon-3.1.0</tag>
   </scm>
 </project>
