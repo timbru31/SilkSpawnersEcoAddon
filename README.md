@@ -1,7 +1,6 @@
 # SilkSpawnersEcoAddon
 
 [![Build Status](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/badge/icon)](https://ci.dustplanet.de/job/SilkSpawnersEcoAddon/)
-[![Build Status](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon.svg?branch=master)](https://travis-ci.org/timbru31/SilkSpawnersEcoAddon)
 [![Build the plugin](https://github.com/timbru31/SilkSpawnersEcoAddon/workflows/Build%20the%20plugin/badge.svg)](https://github.com/timbru31/SilkSpawnersEcoAddon/actions?query=workflow%3A%22Build+the+plugin%22)
 [![Known Vulnerabilities](https://snyk.io/test/github/timbru31/silkspawnersecoaddon/badge.svg)](https://snyk.io/test/github/timbru31/silkspawnersecoaddon)
 
@@ -13,18 +12,20 @@
 ## Info
 
 This Bukkit (compatible with CraftBukkit, Spigot, Paper) is an addon for the SilkSpawners plugin and adds an optional economy feature to charge different cases via Vault, XP, or both:
-* Charging for
-  * Breaking spawners
-  * Changing spawners
-  * Placing spawners
-* Uses pure SilkSpawners API
-* Fallback and flexible configuration of each mob
-* No multiple charging of a mob (when changing)
-* Second command/action as a confirmation needed (optional)
 
-*Third party features, all of them can be disabled*
-* bStats for usage statistics
-* Auto Updater (connecting to https://dev.bukkit.org for updating checking)
+- Charging for
+  - Breaking spawners
+  - Changing spawners
+  - Placing spawners
+- Uses pure SilkSpawners API
+- Fallback and flexible configuration of each mob
+- No multiple charging of a mob (when changing)
+- Second command/action as a confirmation needed (optional)
+
+_Third party features, all of them can be disabled_
+
+- bStats for usage statistics
+- Auto Updater (connecting to https://dev.bukkit.org for updating checking)
 
 ## Standard config
 
@@ -79,7 +80,7 @@ cow:
 (Fallback to OPs, if no permissions system is found)
 
 | Permission node     | Description                         |
-|:--------------------|:------------------------------------|
+| :------------------ | :---------------------------------- |
 | silkspawners.free   | Bypasses the economy check          |
 | silkspawners.reload | Allows access to the reload command |
 
@@ -99,20 +100,22 @@ Please follow the Sun Coding Guidelines, thanks!
 ## Data usage collection of bStats
 
 #### Disabling bStats
-The file `./plugins/bStats/config.yml` contains an option to *opt-out*.
+
+The file `./plugins/bStats/config.yml` contains an option to _opt-out_.
 
 #### The following data is **read and sent** to https://bstats.org and can be seen under https://bstats.org/plugin/bukkit/SilkSpawnersEcoAddon
-* Your server's randomly generated UUID
-* The amount of players on your server
-* The online mode of your server
-* The bukkit version of your server
-* The java version of your system (e.g. Java 8)
-* The name of your OS (e.g. Windows)
-* The version of your OS
-* The architecture of your OS (e.g. amd64)
-* The system cores of your OS (e.g. 8)
-* bStats-supported plugins
-* Plugin version of bStats-supported plugins
+
+- Your server's randomly generated UUID
+- The amount of players on your server
+- The online mode of your server
+- The bukkit version of your server
+- The java version of your system (e.g. Java 8)
+- The name of your OS (e.g. Windows)
+- The version of your OS
+- The architecture of your OS (e.g. amd64)
+- The system cores of your OS (e.g. 8)
+- bStats-supported plugins
+- Plugin version of bStats-supported plugins
 
 ## Donation
 
@@ -122,4 +125,5 @@ The file `./plugins/bStats/config.yml` contains an option to *opt-out*.
 1NnrRgdy7CfiYN63vKHiypSi3MSctCP55C
 
 ---
+
 Built by (c) Tim Brust and contributors. Released under the MIT license.
