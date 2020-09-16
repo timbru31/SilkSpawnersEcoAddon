@@ -128,16 +128,18 @@ public class SilkSpawnersEcoAddonUtil {
     @SuppressWarnings({ "PMD.AvoidDuplicateLiterals", "checkstyle:SeparatorWrap" })
     private void sendConfirmationMessage(final Player player, final double priceXP, final double priceMoney) {
         if (plugin.isChargeBoth()) {
+            final String priceString = getFormattedPrice(priceMoney);
             player.sendMessage(
                     ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("confirmationPendingBoth", ""))
-                            .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
+                            .replace("%money%", priceString).replace("%xp%", Double.toString(priceXP)));
         } else if (plugin.isChargeXP()) {
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("confirmationPendingXP", ""))
                     .replace("%xp%", Double.toString(priceXP)));
         } else {
+            final String priceString = getFormattedPrice(priceMoney);
             player.sendMessage(
                     ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("confirmationPendingMoney", ""))
-                            .replace("%money%", Double.toString(priceMoney)));
+                            .replace("%money%", priceString));
         }
     }
 
@@ -146,8 +148,9 @@ public class SilkSpawnersEcoAddonUtil {
     private boolean chargeMoney(final Player player, final double priceMoney) {
         if (plugin.getEcon().has(player, priceMoney)) {
             plugin.getEcon().withdrawPlayer(player, priceMoney);
+            final String priceString = getFormattedPrice(priceMoney);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordMoney", ""))
-                    .replace("%money%", Double.toString(priceMoney)));
+                    .replace("%money%", priceString));
             return false;
         }
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordMoney", "")));
@@ -161,13 +164,13 @@ public class SilkSpawnersEcoAddonUtil {
         final boolean canAffordMoney = plugin.getEcon().has(player, priceMoney);
         if (canAffordXP && canAffordMoney) {
             plugin.getEcon().withdrawPlayer(player, priceMoney);
-
+            final String priceString = getFormattedPrice(priceMoney);
             final int newTotalXP = totalXP - priceXP;
             player.setTotalExperience(0);
             player.setLevel(0);
             player.giveExp(newTotalXP);
             player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("affordBoth", ""))
-                    .replace("%money%", Double.toString(priceMoney)).replace("%xp%", Double.toString(priceXP)));
+                    .replace("%money%", priceString).replace("%xp%", Double.toString(priceXP)));
             return false;
         }
         if (canAffordXP) {
@@ -192,5 +195,15 @@ public class SilkSpawnersEcoAddonUtil {
         }
         player.sendMessage(ChatColor.translateAlternateColorCodes('&', plugin.getLocalization().getString("cantAffordXP", "")));
         return true;
+    }
+
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public String getFormattedPrice(final String price) {
+        return getFormattedPrice(Double.parseDouble(price));
+    }
+
+    @SuppressWarnings("checkstyle:MissingJavadocMethod")
+    public String getFormattedPrice(final double price) {
+        return plugin.getNumberFormat().format(price);
     }
 }

@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -62,6 +63,9 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
     @Getter
     @Setter
     private SilkUtil silkUtil;
+    @Getter
+    @Setter
+    private DecimalFormat numberFormat;
 
     @Override
     public void onDisable() {
@@ -176,6 +180,7 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         config.addDefault("chargeXP", Boolean.FALSE);
         config.addDefault("chargeBoth", Boolean.FALSE);
         config.addDefault("chargeMultipleAmounts", Boolean.FALSE);
+        config.addDefault("numberFormat", "$ 00.##");
         config.addDefault("confirmation.enabled", Boolean.FALSE);
         config.addDefault("confirmation.delay", 30);
         config.addDefault("default.break.money", 10.5);
@@ -202,6 +207,8 @@ public class SilkSpawnersEcoAddon extends JavaPlugin {
         setChargeXP(config.getBoolean("chargeXP"));
         setChargeBoth(config.getBoolean("chargeBoth"));
         setConfirmation(config.getBoolean("confirmation.enabled"));
+        final String numberFormatString = config.getString("numberFormat", "$ 00.##");
+        setNumberFormat(new DecimalFormat(numberFormatString));
     }
 
     @SuppressFBWarnings(value = "UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR", justification = "onEnable is our \"constructor\"")

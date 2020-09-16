@@ -36,6 +36,7 @@ chargeSameMob: false
 chargeXP: false
 chargeBoth: false
 chargeMultipleAmounts: false
+numberFormat: $ 00.##
 confirmation:
   enabled: false
   delay: 30
