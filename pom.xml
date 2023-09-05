@@ -18,6 +18,8 @@
     <plugin.name>SilkSpawnersEcoAddon</plugin.name>
     <plugin.main>de.dustplanet.silkspawnersecoaddon.SilkSpawnersEcoAddon</plugin.main>
     <plugin.package>de.dustplanet.silkspawnersecoaddon</plugin.package>
+    <java.version>1.8</java.version>
+    <jdk.version>1.8</jdk.version>
   </properties>
 
   <repositories>
