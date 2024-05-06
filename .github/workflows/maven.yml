@@ -11,7 +11,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest, macos-13] # OpenJDK 8 is not supported on macos-14+ (M1).
         java: [8, 11, 17]
 
     steps:
